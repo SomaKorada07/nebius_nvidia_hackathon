@@ -1,0 +1,41 @@
+{
+  "note": "Ordered head as written in reflex_model.md: MLP over [s, c_1..c_10] concatenated (22,528 inputs, 5,836,043 params). Same data, seed and optimizer as v1. Never learned to match; predicted NONE for every row. Discarded.",
+  "history": [
+    {
+      "epoch": 0,
+      "train_loss": 1.9898,
+      "val_loss": 1.5946,
+      "val_accuracy": 0.6701
+    },
+    {
+      "epoch": 1,
+      "train_loss": 1.9776,
+      "val_loss": 1.5249,
+      "val_accuracy": 0.6701
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.9765,
+      "val_loss": 1.5158,
+      "val_accuracy": 0.6701
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.9698,
+      "val_loss": 1.5601,
+      "val_accuracy": 0.6701
+    },
+    {
+      "epoch": 4,
+      "train_loss": 1.9548,
+      "val_loss": 1.5416,
+      "val_accuracy": 0.6701
+    },
+    {
+      "epoch": 5,
+      "train_loss": 1.9493,
+      "val_loss": 1.5526,
+      "val_accuracy": 0.6699
+    }
+  ]
+}

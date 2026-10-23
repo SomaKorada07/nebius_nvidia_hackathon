@@ -1,0 +1,12 @@
+{
+  "cosine": {
+    "threshold": 0.44695407152175903,
+    "temperature": 0.07762470841407776
+  },
+  "set_head": {
+    "temperature": 1.5135612487792969
+  },
+  "ordered_head": {
+    "temperature": 0.9332543015480042
+  }
+}

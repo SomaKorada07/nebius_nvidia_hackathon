@@ -1,0 +1,79 @@
+{
+  "customer_service": {
+    "title": "Customer service",
+    "options": {
+      "transaction_status": "Check the status of a payment or transaction.",
+      "refund_status": "Check the status of a refund that was already requested.",
+      "refund_request": "Start a refund for an order or a charge.",
+      "generate_invoice": "Create an invoice or receipt for an order.",
+      "order_tracking": "Track where a shipped order is right now.",
+      "cancel_order": "Cancel an order that has not shipped yet.",
+      "update_payment_method": "Change the card or payment method on file.",
+      "update_shipping_address": "Change the delivery address of an order.",
+      "dispute_charge": "Report a charge that is unrecognized or incorrect.",
+      "talk_to_agent": "Connect the customer with a human support agent."
+    },
+    "examples": [
+      "There's a $49.99 charge on my statement I don't recognize",
+      "I asked for my money back last week, has it been processed?",
+      "Can I speak to a real person please",
+      "I want to cancel my monthly subscription",
+      "How do I reset my password?"
+    ]
+  },
+  "banking": {
+    "title": "Banking",
+    "options": {
+      "card_arrival": "Ask when a card that was ordered will arrive.",
+      "lost_or_stolen_card": "Report a card as lost or stolen.",
+      "activate_my_card": "Ask how to activate a new card.",
+      "transfer_limit": "Ask what the maximum amount for a single transfer is.",
+      "transfer_fee": "Ask why a fee was charged for a transfer.",
+      "cancel_transfer": "Cancel a transfer that was just made.",
+      "exchange_rate": "Look up the exchange rate between two currencies.",
+      "pin_change": "Change the PIN of a card."
+    },
+    "examples": [
+      "what's the most I can send in one transfer?",
+      "someone stole my wallet with my card in it",
+      "how many euros will I get for 100 dollars?",
+      "how do I open a savings account?"
+    ]
+  },
+  "smart_assistant": {
+    "title": "Smart assistant",
+    "options": {
+      "timer": "Start a countdown timer.",
+      "reminder": "Create a reminder for a task.",
+      "calendar": "Check or add events on a calendar.",
+      "weather": "Ask about the weather forecast.",
+      "time": "Ask what the current time is.",
+      "play_music": "Play a song, artist or playlist."
+    },
+    "examples": [
+      "set a timer for 10 minutes",
+      "will it rain this weekend?",
+      "remind me to call mom at 5",
+      "set an alarm for 6 am tomorrow",
+      "turn off the living room lights"
+    ]
+  },
+  "travel": {
+    "title": "Travel & dining",
+    "options": {
+      "restaurant_reservation": "Book a table at a restaurant.",
+      "restaurant_reviews": "Look up reviews of a restaurant.",
+      "book_flight": "Book a plane ticket.",
+      "book_hotel": "Book a hotel room.",
+      "uber": "Book a ride with a car service.",
+      "directions": "Get directions to a place.",
+      "car_rental": "Rent a car for a trip."
+    },
+    "examples": [
+      "book me a table for two at 8 tonight",
+      "find me a hotel room in Paris for 3 nights",
+      "get me a ride to the airport",
+      "do I need a visa to visit Japan?"
+    ]
+  }
+}

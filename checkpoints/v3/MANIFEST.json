@@ -1,0 +1,47 @@
+{
+  "version": "v3",
+  "created": "2026-10-20",
+  "code": "git tag v3",
+  "encoder": {
+    "model_id": "nvidia/Nemotron-3.5-Embed-1B-BF16",
+    "revision": "c0f2e8ab5367f5090e6eed608f607bafe76d707b"
+  },
+  "candidate_text": "name_description",
+  "seed": 17,
+  "environment": {
+    "python": "3.10.22",
+    "platform": "macOS-26.7.1-arm64-arm-64bit",
+    "device": "mps",
+    "torch": "2.14.1",
+    "transformers": "5.16.1",
+    "sentence-transformers": "6.1.0",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2",
+    "pyarrow": "25.0.1"
+  },
+  "sha256": {
+    "data/raw/clinc150/data_full.json": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+    "data/raw/clinc150/domains.json": "b947b579d3b8e74b06f93b01083d8efaff2888b43a3e362533bd88a6e1211b3a",
+    "data/raw/banking77/train.csv": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b",
+    "data/raw/banking77/test.csv": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d",
+    "data/label_descriptions.json": "57a8863b8b22b4d7483803748a94fdf5be4ba71c093319714b3c3dc150d65d7a",
+    "data/standardized/labels.json": "15f47885bcbf03ba25e221c424b9c3dabbfe15924e3243bd65350a65ca026e79",
+    "data/standardized/test.parquet": "b6e40aecdc228aa76c25ac47a4fcb0239926cf089e6a04dd93cced256daed05e",
+    "data/standardized/train.parquet": "3a80a583e7920e0b4410dac0a1090a8ccc2321073b3858388610ac81afed9a4c",
+    "data/standardized/validation.parquet": "79cee81386bbca5f9fffc0c730fbfb4fac089431af33620186aeed2b4f466a39",
+    "data/processed/test.parquet": "9375f0d8f6208da6dbe2768cdbecb89835f3c7a6a05a59623f4fbd7666cfb81d",
+    "data/processed/train.parquet": "7777c3d57df6f007446a9697097b35c327f37e1f54bc9afee3b455f984c457e7",
+    "data/processed/v3_split.json": "9737178af29d4d6c5339b4a4bebe2ac5fa86b7f6175976414ac3b36e31234757",
+    "data/processed/v3_stage1.parquet": "52bac53000cd8485ff09caf2672c34af29eef46b6eeca69be5341d99b470d1ba",
+    "data/processed/v3_stage2.parquet": "675ea4c5cd38829e6187d399cc38b19da0d7f7304f8d0c1fb98f821f5f352a04",
+    "data/processed/validation.parquet": "02a8647ddf98666e2229a9348f16613ae759c28425bb67de87aa20612f7390ea",
+    "artifacts/embeddings/candidate_embeddings.npy": "abe3ad4b9802409304792a0ea7bc9a4b67c928c09dd9d55d5f02b6a8f9bccd66",
+    "artifacts/embeddings/candidate_index.parquet": "b4eb73bdb333aace452be7e9be8f4e94cb2a1167499b0edff140310471c406da",
+    "artifacts/embeddings/state_embeddings.npy": "48cb4d288af2aa8313c854bc58ad5807d03e1d277137fae974abdd04004a3129",
+    "artifacts/embeddings/state_index.parquet": "e581f65db367eaa6055ac0d692dba020575cee657dc1de6034a8a874f25a5cd5",
+    "checkpoints/v3/weights/reflex_v3.pt": "f42d3636990c64b5ed6218a2f8cbcb85ca9d771720eb423449e5fab382d448e5",
+    "checkpoints/v3/weights/reflex_v3_base.pt": "f762f3d504a1ea13fa59f1df2add66a1fa938f87665e3e94ca01d7e2e0165e0c",
+    "checkpoints/v3/config.yaml": "b22df81f5f78dfbb915cba3eb3a2e96bcbdb403a30596ff30bd8724e849bfef2"
+  }
+}

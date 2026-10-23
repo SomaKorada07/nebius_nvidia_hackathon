@@ -1,0 +1,758 @@
+{
+  "version": "v1",
+  "split": "validation",
+  "bootstrap_resamples": 1000,
+  "shuffles": 10,
+  "params": {
+    "cosine": 0,
+    "reflex": 2950914,
+    "ordered": 16321803
+  },
+  "methods": {
+    "cosine": {
+      "accuracy": {
+        "closed": {
+          "value": 0.3834,
+          "ci95": [
+            0.367,
+            0.3998
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_hard": {
+          "value": 0.866,
+          "ci95": [
+            0.8546,
+            0.8773
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_random": {
+          "value": 0.9789,
+          "ci95": [
+            0.975,
+            0.9823
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "natural_oos": {
+          "value": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n_sets": 200,
+          "n_examples": 100
+        },
+        "all": {
+          "value": 0.7454,
+          "ci95": [
+            0.7394,
+            0.7515
+          ],
+          "n_sets": 19370,
+          "n_examples": 3295
+        }
+      },
+      "seen_vs_unseen": {
+        "seen": {
+          "closed": {
+            "value": 0.3834,
+            "ci95": [
+              0.367,
+              0.3998
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_hard": {
+            "value": 0.866,
+            "ci95": [
+              0.8546,
+              0.8773
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_random": {
+            "value": 0.9789,
+            "ci95": [
+              0.975,
+              0.9823
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          }
+        },
+        "unseen": {
+          "closed": {
+            "value": 0.42,
+            "ci95": [
+              0.3859,
+              0.4541
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_hard": {
+            "value": 0.848,
+            "ci95": [
+              0.825,
+              0.8704
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_random": {
+            "value": 0.9876,
+            "ci95": [
+              0.9808,
+              0.9938
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          }
+        }
+      },
+      "none": {
+        "precision": 0.7549,
+        "recall": 0.9237,
+        "f1": 0.8308,
+        "false_accept_rate": 0.0763,
+        "closed_errors_that_are_rejections": 0.9881
+      },
+      "threshold_free": {
+        "seen": {
+          "rank1_closed": {
+            "value": 0.92,
+            "ci95": [
+              0.9121,
+              0.9277
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "auroc_closed_vs_hard_removed": 0.6931,
+          "auroc_closed_vs_random_removed": 0.8722
+        },
+        "unseen": {
+          "rank1_closed": {
+            "value": 0.92,
+            "ci95": [
+              0.902,
+              0.9355
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "auroc_closed_vs_hard_removed": 0.696,
+          "auroc_closed_vs_random_removed": 0.8868
+        }
+      },
+      "by_dataset": {
+        "clinc150": {
+          "closed": 0.3256,
+          "gold_removed_hard": 0.9233,
+          "gold_removed_random": 0.9965,
+          "natural_oos": 1.0,
+          "all": 0.7519
+        },
+        "banking77": {
+          "closed": 0.5579,
+          "gold_removed_hard": 0.6931,
+          "gold_removed_random": 0.9258,
+          "all": 0.7256
+        }
+      },
+      "by_list_size": {
+        "5": 0.75,
+        "10": 0.7408
+      },
+      "calibration": {
+        "temperature": 0.0776,
+        "nll_before": 1.8605,
+        "nll_after": 0.7396,
+        "ece_after": 0.0824
+      }
+    },
+    "reflex": {
+      "accuracy": {
+        "closed": {
+          "value": 0.9225,
+          "ci95": [
+            0.9144,
+            0.9313
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_hard": {
+          "value": 0.795,
+          "ci95": [
+            0.7809,
+            0.8078
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_random": {
+          "value": 0.9477,
+          "ci95": [
+            0.9421,
+            0.9534
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "natural_oos": {
+          "value": 0.945,
+          "ci95": [
+            0.91,
+            0.975
+          ],
+          "n_sets": 200,
+          "n_examples": 100
+        },
+        "all": {
+          "value": 0.889,
+          "ci95": [
+            0.8832,
+            0.8951
+          ],
+          "n_sets": 19370,
+          "n_examples": 3295
+        }
+      },
+      "seen_vs_unseen": {
+        "seen": {
+          "closed": {
+            "value": 0.9225,
+            "ci95": [
+              0.9144,
+              0.9313
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_hard": {
+            "value": 0.795,
+            "ci95": [
+              0.7809,
+              0.8078
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_random": {
+            "value": 0.9477,
+            "ci95": [
+              0.9421,
+              0.9534
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          }
+        },
+        "unseen": {
+          "closed": {
+            "value": 0.7432,
+            "ci95": [
+              0.714,
+              0.7717
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_hard": {
+            "value": 0.5199,
+            "ci95": [
+              0.487,
+              0.5527
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_random": {
+            "value": 0.9051,
+            "ci95": [
+              0.8902,
+              0.9206
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          }
+        }
+      },
+      "none": {
+        "precision": 0.9628,
+        "recall": 0.8725,
+        "f1": 0.9154,
+        "false_accept_rate": 0.1275,
+        "closed_errors_that_are_rejections": 0.8848
+      },
+      "threshold_free": {
+        "seen": {
+          "rank1_closed": {
+            "value": 0.9803,
+            "ci95": [
+              0.9764,
+              0.984
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "auroc_closed_vs_hard_removed": 0.94,
+          "auroc_closed_vs_random_removed": 0.9832
+        },
+        "unseen": {
+          "rank1_closed": {
+            "value": 0.8952,
+            "ci95": [
+              0.8753,
+              0.9132
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "auroc_closed_vs_hard_removed": 0.7414,
+          "auroc_closed_vs_random_removed": 0.9104
+        }
+      },
+      "by_dataset": {
+        "clinc150": {
+          "closed": 0.9271,
+          "gold_removed_hard": 0.78,
+          "gold_removed_random": 0.9563,
+          "natural_oos": 0.945,
+          "all": 0.8886
+        },
+        "banking77": {
+          "closed": 0.9088,
+          "gold_removed_hard": 0.8403,
+          "gold_removed_random": 0.922,
+          "all": 0.8904
+        }
+      },
+      "by_list_size": {
+        "5": 0.9065,
+        "10": 0.8716
+      },
+      "calibration": {
+        "temperature": 1.5136,
+        "nll_before": 0.362,
+        "nll_after": 0.3202,
+        "ece_after": 0.0188
+      }
+    },
+    "ordered": {
+      "accuracy": {
+        "closed": {
+          "value": 0.829,
+          "ci95": [
+            0.8178,
+            0.8397
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_hard": {
+          "value": 0.6554,
+          "ci95": [
+            0.6393,
+            0.6706
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "gold_removed_random": {
+          "value": 0.8775,
+          "ci95": [
+            0.869,
+            0.8854
+          ],
+          "n_sets": 6390,
+          "n_examples": 3195
+        },
+        "natural_oos": {
+          "value": 0.97,
+          "ci95": [
+            0.945,
+            0.99
+          ],
+          "n_sets": 200,
+          "n_examples": 100
+        },
+        "all": {
+          "value": 0.7892,
+          "ci95": [
+            0.7821,
+            0.7957
+          ],
+          "n_sets": 19370,
+          "n_examples": 3295
+        }
+      },
+      "seen_vs_unseen": {
+        "seen": {
+          "closed": {
+            "value": 0.829,
+            "ci95": [
+              0.8178,
+              0.8397
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_hard": {
+            "value": 0.6554,
+            "ci95": [
+              0.6393,
+              0.6706
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "gold_removed_random": {
+            "value": 0.8775,
+            "ci95": [
+              0.869,
+              0.8854
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          }
+        },
+        "unseen": {
+          "closed": {
+            "value": 0.8151,
+            "ci95": [
+              0.7897,
+              0.8406
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_hard": {
+            "value": 0.536,
+            "ci95": [
+              0.5056,
+              0.5689
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "gold_removed_random": {
+            "value": 0.8691,
+            "ci95": [
+              0.8524,
+              0.8871
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          }
+        }
+      },
+      "none": {
+        "precision": 0.9195,
+        "recall": 0.7696,
+        "f1": 0.8379,
+        "false_accept_rate": 0.2304,
+        "closed_errors_that_are_rejections": 0.8005
+      },
+      "threshold_free": {
+        "seen": {
+          "rank1_closed": {
+            "value": 0.9244,
+            "ci95": [
+              0.9171,
+              0.9313
+            ],
+            "n_sets": 6390,
+            "n_examples": 3195
+          },
+          "auroc_closed_vs_hard_removed": 0.8544,
+          "auroc_closed_vs_random_removed": 0.9417
+        },
+        "unseen": {
+          "rank1_closed": {
+            "value": 0.8989,
+            "ci95": [
+              0.879,
+              0.915
+            ],
+            "n_sets": 1612,
+            "n_examples": 806
+          },
+          "auroc_closed_vs_hard_removed": 0.8114,
+          "auroc_closed_vs_random_removed": 0.9235
+        }
+      },
+      "by_dataset": {
+        "clinc150": {
+          "closed": 0.8438,
+          "gold_removed_hard": 0.6531,
+          "gold_removed_random": 0.9169,
+          "natural_oos": 0.97,
+          "all": 0.8068
+        },
+        "banking77": {
+          "closed": 0.7843,
+          "gold_removed_hard": 0.6623,
+          "gold_removed_random": 0.7585,
+          "all": 0.735
+        }
+      },
+      "by_list_size": {
+        "5": 0.8147,
+        "10": 0.7637
+      },
+      "calibration": {
+        "temperature": 0.9333,
+        "nll_before": 0.6328,
+        "nll_after": 0.6311,
+        "ece_after": 0.0598
+      }
+    }
+  },
+  "paired_differences": {
+    "reflex_minus_ordered_all": {
+      "value": 0.0998,
+      "ci95": [
+        0.0932,
+        0.1067
+      ],
+      "n_sets": 19370,
+      "n_examples": 3295
+    },
+    "reflex_minus_cosine_all": {
+      "value": 0.1436,
+      "ci95": [
+        0.1366,
+        0.1502
+      ],
+      "n_sets": 19370,
+      "n_examples": 3295
+    },
+    "reflex_minus_ordered_closed_unseen": {
+      "value": -0.072,
+      "ci95": [
+        -0.0955,
+        -0.0521
+      ],
+      "n_sets": 1612,
+      "n_examples": 806
+    }
+  },
+  "permutation_stability": {
+    "cosine": {
+      "flip_rate": 0.0,
+      "sets_with_any_flip": 0.0,
+      "accuracy_unshuffled": 0.7467,
+      "worst_shuffle_accuracy": 0.7467,
+      "max_prob_change_mean": 0.0,
+      "max_prob_change_max": 0.0
+    },
+    "reflex": {
+      "flip_rate": 0.0,
+      "sets_with_any_flip": 0.0,
+      "accuracy_unshuffled": 0.8558,
+      "worst_shuffle_accuracy": 0.8558,
+      "max_prob_change_mean": 0.0,
+      "max_prob_change_max": 0.0
+    },
+    "ordered": {
+      "flip_rate": 0.1193,
+      "sets_with_any_flip": 0.2993,
+      "accuracy_unshuffled": 0.7794,
+      "worst_shuffle_accuracy": 0.6174,
+      "max_prob_change_mean": 0.203337,
+      "max_prob_change_max": 0.940147
+    }
+  },
+  "reflex_familiarity_diagnostics": {
+    "gold_logit_by_cosine": {
+      "seen": {
+        "(-1.0, 0.3]": 0.3400000035762787,
+        "(0.3, 0.4]": 2.0999999046325684,
+        "(0.4, 0.5]": 2.9000000953674316,
+        "(0.5, 1.0]": 3.509999990463257
+      },
+      "unseen": {
+        "(-1.0, 0.3]": -5.010000228881836,
+        "(0.3, 0.4]": -0.4699999988079071,
+        "(0.4, 0.5]": 2.319999933242798,
+        "(0.5, 1.0]": 3.5899999141693115
+      }
+    },
+    "negative_logit_by_cosine": {
+      "seen": {
+        "(-1.0, 0.2]": -14.8100004196167,
+        "(0.2, 0.3]": -11.739999771118164,
+        "(0.3, 0.4]": -9.40999984741211,
+        "(0.4, 1.0]": -6.559999942779541
+      },
+      "unseen": {
+        "(-1.0, 0.2]": -14.930000305175781,
+        "(0.2, 0.3]": -9.979999542236328,
+        "(0.3, 0.4]": -6.5,
+        "(0.4, 1.0]": -2.7100000381469727
+      }
+    },
+    "unseen_closed_errors": {
+      "errors": 414,
+      "sets": 1612,
+      "rejected_share": 0.9155,
+      "wrong_label_share": 0.0845,
+      "wrong_label_was_seen_share": 0.8286
+    }
+  },
+  "seed_runs": {
+    "17": {
+      "reflex": {
+        "accuracy_all": 0.889,
+        "accuracy_closed_seen": 0.9225,
+        "accuracy_closed_unseen": 0.7432,
+        "rank1_unseen": 0.8952,
+        "auroc_hard_unseen": 0.7414,
+        "none_f1": 0.9154
+      },
+      "ordered": {
+        "accuracy_all": 0.7892,
+        "accuracy_closed_seen": 0.829,
+        "accuracy_closed_unseen": 0.8151,
+        "rank1_unseen": 0.8989,
+        "auroc_hard_unseen": 0.8114,
+        "none_f1": 0.8379
+      }
+    },
+    "18": {
+      "reflex": {
+        "accuracy_all": 0.8919,
+        "accuracy_closed_seen": 0.8786,
+        "accuracy_closed_unseen": 0.7301,
+        "rank1_unseen": 0.8989,
+        "auroc_hard_unseen": 0.7732,
+        "none_f1": 0.9199
+      },
+      "ordered": {
+        "accuracy_all": 0.7833,
+        "accuracy_closed_seen": 0.7914,
+        "accuracy_closed_unseen": 0.7829,
+        "rank1_unseen": 0.8809,
+        "auroc_hard_unseen": 0.7978,
+        "none_f1": 0.8349
+      }
+    },
+    "19": {
+      "reflex": {
+        "accuracy_all": 0.8036,
+        "accuracy_closed_seen": 0.8966,
+        "accuracy_closed_unseen": 0.8244,
+        "rank1_unseen": 0.9007,
+        "auroc_hard_unseen": 0.8076,
+        "none_f1": 0.8441
+      },
+      "ordered": {
+        "accuracy_all": 0.7863,
+        "accuracy_closed_seen": 0.7951,
+        "accuracy_closed_unseen": 0.7909,
+        "rank1_unseen": 0.8846,
+        "auroc_hard_unseen": 0.7936,
+        "none_f1": 0.838
+      }
+    },
+    "20": {
+      "reflex": {
+        "accuracy_all": 0.8484,
+        "accuracy_closed_seen": 0.8823,
+        "accuracy_closed_unseen": 0.7804,
+        "rank1_unseen": 0.8939,
+        "auroc_hard_unseen": 0.7958,
+        "none_f1": 0.8843
+      },
+      "ordered": {
+        "accuracy_all": 0.769,
+        "accuracy_closed_seen": 0.7775,
+        "accuracy_closed_unseen": 0.7798,
+        "rank1_unseen": 0.8741,
+        "auroc_hard_unseen": 0.7984,
+        "none_f1": 0.8243
+      }
+    },
+    "21": {
+      "reflex": {
+        "accuracy_all": 0.8426,
+        "accuracy_closed_seen": 0.8867,
+        "accuracy_closed_unseen": 0.7767,
+        "rank1_unseen": 0.8952,
+        "auroc_hard_unseen": 0.7908,
+        "none_f1": 0.8788
+      },
+      "ordered": {
+        "accuracy_all": 0.7897,
+        "accuracy_closed_seen": 0.7651,
+        "accuracy_closed_unseen": 0.7686,
+        "rank1_unseen": 0.8828,
+        "auroc_hard_unseen": 0.7926,
+        "none_f1": 0.8426
+      }
+    }
+  },
+  "seed_summary": {
+    "reflex": {
+      "accuracy_all": {
+        "mean": 0.8551,
+        "std": 0.0366
+      },
+      "accuracy_closed_seen": {
+        "mean": 0.8933,
+        "std": 0.0176
+      },
+      "accuracy_closed_unseen": {
+        "mean": 0.771,
+        "std": 0.0368
+      },
+      "rank1_unseen": {
+        "mean": 0.8968,
+        "std": 0.0029
+      },
+      "auroc_hard_unseen": {
+        "mean": 0.7818,
+        "std": 0.0257
+      },
+      "none_f1": {
+        "mean": 0.8885,
+        "std": 0.0308
+      }
+    },
+    "ordered": {
+      "accuracy_all": {
+        "mean": 0.7835,
+        "std": 0.0085
+      },
+      "accuracy_closed_seen": {
+        "mean": 0.7916,
+        "std": 0.024
+      },
+      "accuracy_closed_unseen": {
+        "mean": 0.7875,
+        "std": 0.0174
+      },
+      "rank1_unseen": {
+        "mean": 0.8843,
+        "std": 0.0091
+      },
+      "auroc_hard_unseen": {
+        "mean": 0.7988,
+        "std": 0.0075
+      },
+      "none_f1": {
+        "mean": 0.8355,
+        "std": 0.0069
+      }
+    }
+  }
+}

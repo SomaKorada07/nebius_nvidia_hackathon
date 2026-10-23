@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflex Demo</title>
+<style>
+  :root {
+    --bg: #f5f6f2; --surface: #ffffff; --surface-2: #f9faf7; --ink: #161815; --ink-2: #5a5f58; --ink-3: #8b9087;
+    --line: #e2e5dd; --accent: #76b900; --accent-ink: #3f6700; --accent-soft: #edf6dc;
+    --llm: #6d4ae8; --llm-soft: #eee9fd; --none: #c2410c; --none-soft: #fcebe1; --err: #b91c1c;
+    --pos: 118, 185, 0; --neg: 109, 74, 232;
+    --radius: 14px; --shadow: 0 1px 2px rgba(20, 24, 18, .05), 0 4px 16px rgba(20, 24, 18, .04);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f110e; --surface: #171a16; --surface-2: #1c201b; --ink: #eef0ea; --ink-2: #a9aea5; --ink-3: #757a71;
+      --line: #2a2f28; --accent: #86cc0a; --accent-ink: #b4e35a; --accent-soft: #23301a;
+      --llm: #a48bff; --llm-soft: #2a2442; --none: #fb923c; --none-soft: #3a2418; --err: #f87171;
+      --pos: 134, 204, 10; --neg: 164, 139, 255; --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f110e; --surface: #171a16; --surface-2: #1c201b; --ink: #eef0ea; --ink-2: #a9aea5; --ink-3: #757a71;
+    --line: #2a2f28; --accent: #86cc0a; --accent-ink: #b4e35a; --accent-soft: #23301a;
+    --llm: #a48bff; --llm-soft: #2a2442; --none: #fb923c; --none-soft: #3a2418; --err: #f87171;
+    --pos: 134, 204, 10; --neg: 164, 139, 255; --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column;
+  }
+  button, input { font: inherit; color: inherit; }
+  code { font-family: var(--mono); font-size: .92em; }
+
+  /* header */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+         padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand h1 { margin: 0; font-size: 20px; letter-spacing: -.01em; }
+  .brand h1 b { color: var(--accent); }
+  .brand span { color: var(--ink-2); }
+  .status { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--line);
+          border-radius: 999px; font-size: 12.5px; color: var(--ink-2); background: var(--surface-2); }
+  .pill b { color: var(--ink); font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
+  .pill.ok .dot { background: var(--accent); }
+  .pill.busy .dot { background: #e0a800; animation: pulse 1s infinite; }
+  .pill.bad .dot { background: var(--err); }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  /* domain + options */
+  .bar { padding: 14px 24px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  .tab { border: 0; background: none; padding: 7px 14px; border-radius: 9px; cursor: pointer; color: var(--ink-2); font-weight: 500; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+  .thr { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 13px; }
+  .thr input { accent-color: var(--accent); width: 150px; }
+  .thr output { font-family: var(--mono); color: var(--ink); min-width: 34px; }
+  .options { margin: 12px 24px 0; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line);
+             border-radius: var(--radius); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .options .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-right: 4px; }
+  .chip { font-family: var(--mono); font-size: 12.5px; padding: 4px 9px; border-radius: 8px; background: var(--surface-2);
+          border: 1px solid var(--line); cursor: default; white-space: nowrap; }
+  .chip.none { color: var(--none); border-style: dashed; background: none; }
+  .chip.hit { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+  .chip.hit-llm { background: var(--llm-soft); border-color: var(--llm); color: var(--llm); }
+
+  /* layout */
+  main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(340px, 5fr) minmax(0, 7fr); gap: 16px; padding: 16px 24px 20px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+          display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .card-head { display: flex; align-items: baseline; gap: 10px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+  .card-head h2 { margin: 0; font-size: 15px; }
+  .card-head .muted { flex: 1; min-width: 0; color: var(--ink-3); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ghost { border: 1px solid var(--line); background: none; border-radius: 8px; padding: 3px 10px; cursor: pointer; color: var(--ink-2); font-size: 12.5px; }
+  .ghost:hover { color: var(--ink); }
+
+  /* chat */
+  .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .empty { margin: auto; text-align: center; color: var(--ink-3); max-width: 300px; }
+  .msg { max-width: 88%; padding: 10px 13px; border-radius: 14px; }
+  .msg.user { align-self: flex-end; background: var(--ink); color: var(--bg); border-bottom-right-radius: 4px; }
+  .msg.bot { align-self: flex-start; background: var(--surface-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; cursor: pointer; }
+  .msg.bot.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .msg.bot .answer { font-family: var(--mono); font-weight: 600; }
+  .msg.bot .answer.none { color: var(--none); }
+  .msg.bot .meta { display: flex; gap: 8px; align-items: center; margin-top: 6px; font-size: 12px; color: var(--ink-2); flex-wrap: wrap; }
+  .msg.bot .why { margin-top: 6px; font-size: 13px; color: var(--ink-2); }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+  .badge.reflex { background: var(--accent-soft); color: var(--accent-ink); }
+  .badge.llm { background: var(--llm-soft); color: var(--llm); }
+  .badge.fallback { background: var(--none-soft); color: var(--none); }
+  .suggest { margin-top: 8px; padding: 8px 10px; border-radius: 10px; border: 1px dashed var(--llm); font-size: 13px; }
+  .suggest code { color: var(--llm); font-weight: 600; }
+  .examples { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 16px 0; border-top: 1px solid var(--line); }
+  .ex { border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 4px 11px; font-size: 12.5px; cursor: pointer; color: var(--ink-2); }
+  .ex:hover { color: var(--ink); border-color: var(--ink-3); }
+  .composer { display: flex; gap: 8px; padding: 10px 16px 16px; }
+  .composer input { flex: 1; min-width: 0; padding: 10px 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); outline: none; }
+  .composer input:focus { border-color: var(--accent); }
+  .send { border: 0; border-radius: 10px; padding: 0 18px; background: var(--accent); color: #0f1a00; font-weight: 600; cursor: pointer; }
+  .send:disabled, .ex:disabled { opacity: .5; cursor: default; }
+
+  /* pipeline */
+  .steps { list-style: none; margin: 0; padding: 14px 16px 18px; overflow-y: auto; flex: 1; }
+  .step { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; position: relative; padding-bottom: 16px; }
+  .step:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 30px; bottom: 2px; width: 2px; background: var(--line); }
+  .marker { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
+            border: 2px solid var(--line); color: var(--ink-3); background: var(--surface); position: relative; z-index: 1; }
+  .step.done .marker { border-color: var(--accent); background: var(--accent); color: #0f1a00; }
+  .step.running .marker { border-color: var(--accent); }
+  .step.error .marker { border-color: var(--err); color: var(--err); }
+  .step.skipped { opacity: .55; }
+  .step .row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-height: 28px; }
+  .step h3 { margin: 0; font-size: 14px; font-weight: 600; line-height: 28px; }
+  .step.pending h3 { color: var(--ink-3); }
+  .ms { font-family: var(--mono); font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+  .sub { margin: 0 0 8px; color: var(--ink-2); font-size: 12.5px; }
+  .spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin .7s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .quote { font-size: 13px; margin: 0 0 6px; }
+  .strip { height: 14px; border-radius: 4px; border: 1px solid var(--line); }
+  .strip.small { height: 10px; }
+  .axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+  .rows { display: grid; gap: 5px; }
+  .orow { display: grid; grid-template-columns: minmax(120px, 1.1fr) minmax(80px, 1fr) 48px minmax(90px, 1.2fr); gap: 10px; align-items: center; font-size: 12.5px; }
+  .orow .name, .prow .name { font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track { height: 8px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+  .fill { height: 100%; background: var(--ink-3); border-radius: 3px; transition: width .4s ease; }
+  .num { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--ink-2); }
+  .prow { display: grid; grid-template-columns: minmax(120px, 1fr) 2fr 54px 46px; gap: 10px; align-items: center; font-size: 12.5px; padding: 3px 6px; border-radius: 8px; }
+  .prow .track { height: 12px; }
+  .prow .fill { background: var(--accent); }
+  .prow.is-none .name { color: var(--none); }
+  .prow.is-none .fill { background: var(--none); }
+  .prow.top { background: var(--accent-soft); }
+  .prow.top.is-none { background: var(--none-soft); }
+  .prow .num.logit { color: var(--ink-3); }
+  .phead { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; }
+  .feats { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-top: 10px; }
+  .feat { border: 1px solid var(--line); border-radius: 9px; padding: 6px 9px; background: var(--surface-2); }
+  .feat span { display: block; font-size: 11px; color: var(--ink-3); }
+  .feat b { font-family: var(--mono); font-size: 13px; }
+  .route { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 10px; font-weight: 600; font-size: 13px; }
+  .route.reflex { background: var(--accent-soft); color: var(--accent-ink); }
+  .route.llm { background: var(--llm-soft); color: var(--llm); }
+  .reason { margin: 6px 0 0; color: var(--ink-2); font-size: 12.5px; }
+  details { margin-top: 8px; font-size: 12.5px; }
+  summary { cursor: pointer; color: var(--ink-2); }
+  pre { margin: 6px 0 0; padding: 9px 11px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--line);
+        font: 12px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
+  .final { margin: 2px 16px 16px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .final.reflex { background: var(--accent-soft); border-color: var(--accent); }
+  .final.llm { background: var(--llm-soft); border-color: var(--llm); }
+  .final .big { font-family: var(--mono); font-size: 17px; font-weight: 700; }
+  .final .big.none { color: var(--none); }
+  .final .total { margin-left: auto; font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+  .errbox { margin: 0 16px 16px; padding: 10px 12px; border-radius: 10px; background: var(--none-soft); color: var(--err); font-size: 13px; }
+
+  @media (max-width: 960px) {
+    body { height: auto; }
+    main { grid-template-columns: minmax(0, 1fr); padding: 12px 16px 16px; }
+    .card { min-height: 420px; }
+    .top, .bar { padding-left: 16px; padding-right: 16px; }
+    .options { margin: 12px 16px 0; }
+    .orow { grid-template-columns: minmax(100px, 1fr) 1fr 44px; }
+    .orow .strip { display: none; }
+    .prow { grid-template-columns: minmax(100px, 1fr) 1.4fr 46px; }
+    .prow .logit { display: none; }
+  }
+  @media (max-width: 600px) {
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+    .thr { width: 100%; }
+    .thr input { flex: 1; width: auto; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><h1><b>Reflex</b> router</h1><span>open-option tool selection on NVIDIA Nemotron</span></div>
+  <div class="status">
+    <span class="pill busy" id="st-model"><i class="dot"></i><span>Embedder <b>loading…</b></span></span>
+    <span class="pill busy" id="st-llm"><i class="dot"></i><span>LLM <b>checking…</b></span></span>
+  </div>
+</header>
+
+<div class="bar">
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Domain"></nav>
+  <label class="thr">Answer locally when Reflex p ≥
+    <input type="range" id="thr" min="0.30" max="0.95" step="0.05" value="0.70">
+    <output id="thr-v">0.70</output>
+  </label>
+</div>
+<section class="options" aria-label="Options in this domain">
+  <span class="label" id="opt-label">Options</span>
+  <span id="chips" style="display: contents"></span>
+  <span class="chip none" title="Added by Reflex: none of the options fits">NONE_OF_THESE</span>
+</section>
+
+<main>
+  <section class="card" aria-label="Chat">
+    <div class="card-head"><h2>Ask</h2><span class="muted">Every message is routed on its own; no chat history is used.</span>
+      <button class="ghost" id="clear" type="button">Clear</button></div>
+    <div class="messages" id="messages"></div>
+    <div class="examples" id="examples"></div>
+    <form class="composer" id="form">
+      <input id="q" placeholder="Ask something in this domain…" autocomplete="off" maxlength="500">
+      <button class="send" id="send" type="submit">Send</button>
+    </form>
+  </section>
+  <section class="card" aria-label="Pipeline">
+    <div class="card-head"><h2>Pipeline</h2><span class="muted" id="pipe-q">Pick or send a message to see each step.</span></div>
+    <ol class="steps" id="steps"></ol>
+    <div id="final"></div>
+  </section>
+</main>
+
+<script>
+const NONE = "NONE_OF_THESE";
+const STEPS = [
+  ["wait_model", "Load the embedding model"],
+  ["embed_question", "Embed the question"],
+  ["embed_options", "Embed the options"],
+  ["score", "Score with the Reflex head"],
+  ["route", "Route"],
+  ["llm", "Ask the Nemotron LLM"],
+];
+const FEATURES = ["top score", "gap to 2nd", "entropy (norm.)", "evidence (norm.)", "best cosine", "log(1 + K)"];
+const S = { domains: {}, domain: null, traces: [], selected: null, busy: false, status: {} };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmtMs = (ms) => ms == null ? "" : ms >= 1000 ? (ms / 1000).toFixed(2) + " s" : Math.round(ms) + " ms";
+const pct = (x) => Math.max(0, Math.min(100, x * 100)).toFixed(1) + "%";
+
+/* ---------- status ---------- */
+async function pollStatus() {
+  try {
+    const s = await (await fetch("/api/status")).json();
+    S.status = s;
+    const m = $("st-model"), l = $("st-llm");
+    m.className = "pill " + (s.model === "ready" ? "ok" : s.model === "error" ? "bad" : "busy");
+    m.lastElementChild.innerHTML = s.model === "ready"
+      ? `Nemotron Embed 1B <b>ready</b> · ${esc(s.device)} · loaded in ${s.load_seconds} s`
+      : s.model === "error" ? `Embedder <b>failed</b>` : `Nemotron Embed 1B <b>loading…</b>`;
+    m.title = s.error || "";
+    l.className = "pill " + (s.llm === "ready" ? "ok" : ["checking", "loading"].includes(s.llm) ? "busy" : "bad");
+    l.lastElementChild.innerHTML = `${esc(s.llm_model)} <b>${esc(s.llm)}</b>`;
+    setTimeout(pollStatus, s.model === "ready" && !["checking", "loading"].includes(s.llm) ? 10000 : 800);
+  } catch { setTimeout(pollStatus, 2000); }
+}
+
+/* ---------- domains ---------- */
+function selectDomain(key) {
+  S.domain = key;
+  const d = S.domains[key];
+  document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.key === key));
+  $("opt-label").textContent = `${Object.keys(d.options).length} options`;
+  $("chips").innerHTML = Object.entries(d.options)
+    .map(([n, desc]) => `<span class="chip" data-name="${esc(n)}" title="${esc(desc)}">${esc(n)}</span>`).join("");
+  $("examples").innerHTML = d.examples.map((q) => `<button class="ex" type="button">${esc(q)}</button>`).join("");
+  document.querySelectorAll(".ex").forEach((b) => b.addEventListener("click", () => send(b.textContent)));
+  setBusy(S.busy);
+  highlightChips(null);
+}
+function highlightChips(trace) {
+  document.querySelectorAll("#chips .chip").forEach((c) => {
+    const hit = trace && trace.domain === S.domain && trace.final && c.dataset.name === trace.final.answer;
+    c.classList.toggle("hit", Boolean(hit && trace.final.source === "reflex"));
+    c.classList.toggle("hit-llm", Boolean(hit && trace.final.source !== "reflex"));
+  });
+}
+
+/* ---------- sending ---------- */
+function setBusy(busy) {
+  S.busy = busy;
+  $("send").disabled = busy;
+  document.querySelectorAll(".ex").forEach((b) => (b.disabled = busy));
+}
+async function send(question) {
+  question = question.trim();
+  if (!question || S.busy) return;
+  $("q").value = "";
+  const trace = { id: S.traces.length + 1, question, domain: S.domain, steps: {}, final: null, error: null };
+  S.traces.push(trace);
+  S.selected = trace.id;
+  setBusy(true);
+  renderMessages();
+  renderPipeline();
+  try {
+    const res = await fetch("/api/ask", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ domain: S.domain, question, threshold: Number($("thr").value) }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const reader = res.body.getReader(), decoder = new TextDecoder();
+    let buffer = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let nl;
+      while ((nl = buffer.indexOf("\n")) >= 0) {
+        const line = buffer.slice(0, nl).trim();
+        buffer = buffer.slice(nl + 1);
+        if (line) handle(trace, JSON.parse(line));
+      }
+    }
+  } catch (e) {
+    trace.error = String(e.message || e);
+  }
+  setBusy(false);
+  renderMessages();
+  if (S.selected === trace.id) renderPipeline();
+  $("q").focus();
+}
+function handle(trace, ev) {
+  if (ev.step === "start") trace.options = ev.options;
+  else if (ev.step === "final") trace.final = ev;
+  else if (ev.step === "error") trace.error = ev.message;
+  else trace.steps[ev.step] = { ...(trace.steps[ev.step] || {}), ...ev };
+  renderMessages();
+  if (S.selected === trace.id) renderPipeline();
+}
+
+/* ---------- chat ---------- */
+function sourceBadge(f) {
+  if (f.source === "reflex") return `<span class="badge reflex">⚡ Reflex</span>`;
+  if (f.source === "llm") return `<span class="badge llm">◆ Nemotron LLM</span>`;
+  return `<span class="badge fallback">${esc(f.source)}</span>`;
+}
+function currentLabel(t) {
+  const running = STEPS.find(([k]) => t.steps[k] && t.steps[k].status === "running");
+  return running ? running[1] + "…" : "Routing…";
+}
+function renderMessages() {
+  const box = $("messages");
+  if (!S.traces.length) {
+    box.innerHTML = `<div class="empty">Pick a domain, then type a question or tap an example.<br>
+      Reflex answers on its own when it's confident; otherwise the question goes to the Nemotron LLM.</div>`;
+    return;
+  }
+  box.innerHTML = S.traces.map((t) => {
+    let bot;
+    if (t.final) {
+      const f = t.final, none = f.answer === NONE;
+      const sugg = f.suggested_tool ? `<div class="suggest">Missing tool suggested by the LLM: <code>${esc(f.suggested_tool.name)}</code> · ${esc(f.suggested_tool.description)}</div>` : "";
+      bot = `<div class="answer ${none ? "none" : ""}">${esc(f.answer)}</div>
+        ${f.reason ? `<div class="why">${esc(f.reason)}</div>` : ""}${sugg}
+        <div class="meta">${sourceBadge(f)}<span>${fmtMs(f.total_ms)}</span>
+        <span>· ${esc(S.domains[t.domain].title)}</span></div>`;
+    } else if (t.error) {
+      bot = `<div class="answer none">Error</div><div class="why">${esc(t.error)}</div>`;
+    } else {
+      bot = `<div class="meta" style="margin:0"><span class="spin"></span>${esc(currentLabel(t))}</div>`;
+    }
+    return `<div class="msg user">${esc(t.question)}</div>
+      <div class="msg bot ${S.selected === t.id ? "selected" : ""}" data-id="${t.id}" title="Show this message's pipeline">${bot}</div>`;
+  }).join("");
+  box.querySelectorAll(".msg.bot").forEach((el) => el.addEventListener("click", () => {
+    S.selected = Number(el.dataset.id);
+    renderMessages();
+    renderPipeline();
+  }));
+  box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- pipeline ---------- */
+function strip(values, small) {
+  const max = Math.max(...values.map(Math.abs)) || 1, w = 100 / values.length;
+  const stops = values.map((v, i) => {
+    const t = Math.abs(v) / max, rgb = v >= 0 ? "var(--pos)" : "var(--neg)";
+    return `rgba(${rgb}, ${(0.08 + 0.92 * t).toFixed(2)}) ${(i * w).toFixed(3)}% ${((i + 1) * w).toFixed(3)}%`;
+  });
+  return `<div class="strip ${small ? "small" : ""}" style="background: linear-gradient(90deg, ${stops.join(",")})"></div>`;
+}
+const RENDER = {
+  wait_model: (s) => `<p class="sub">${s.status === "running" ? "The embedding model is still loading on its worker thread…" : "Loaded."}</p>`,
+  embed_question: (s) => s.status === "running"
+    ? `<p class="sub">Encoding with Nemotron-3.5-Embed-1B (query encoder) on the model thread…</p><p class="quote">“${esc(s.text)}”</p>`
+    : `<p class="sub">${s.dim}-dimensional vector · computed fresh (no cache) · thread <code>${esc(s.thread)}</code></p>
+       ${strip(s.preview)}<div class="axis"><span>dim 1</span><span>first ${s.preview.length} of ${s.dim} dimensions</span></div>`,
+  embed_options: (s) => {
+    if (s.status === "running") return `<p class="sub">Encoding ${s.count} options as “name: description” (document encoder)…</p>`;
+    const items = [...s.items].sort((a, b) => b.cosine - a.cosine);
+    const maxCos = Math.max(...items.map((i) => i.cosine), 0.01);
+    return `<p class="sub">${items.length} vectors · computed fresh (no cache) · thread <code>${esc(s.thread)}</code> · sorted by cosine similarity to the question</p>
+      <div class="rows">${items.map((i) => `<div class="orow" title="${esc(i.text)}">
+        <span class="name">${esc(i.name)}</span>
+        <div class="track"><div class="fill" style="width:${pct(Math.max(0, i.cosine) / maxCos)}"></div></div>
+        <span class="num">${i.cosine.toFixed(3)}</span>${strip(i.preview, true)}</div>`).join("")}</div>`;
+  },
+  score: (s) => {
+    if (s.status === "running") return `<p class="sub">Running the Reflex v3 head on the model thread…</p>`;
+    const top = s.ranking.reduce((a, b) => (b.prob > a.prob ? b : a));
+    const rows = s.ranking.map((r) => `<div class="prow ${r.name === NONE ? "is-none" : ""} ${r === top ? "top" : ""}">
+        <span class="name">${esc(r.name)}</span><div class="track"><div class="fill" style="width:${pct(r.prob)}"></div></div>
+        <span class="num">${r.prob.toFixed(2)}</span><span class="num logit">${r.logit.toFixed(2)}</span></div>`).join("");
+    const feats = s.features ? `<div class="feats">${s.features.map((v, i) =>
+        `<div class="feat"><span>${FEATURES[i]}</span><b>${v.toFixed(2)}</b></div>`).join("")}</div>
+        <p class="reason">The NONE_OF_THESE score comes only from these six numbers about the option scores, not from the question itself.</p>` : "";
+    return `<p class="sub">Calibrated softmax over ${s.ranking.length - 1} options + NONE_OF_THESE · thread <code>${esc(s.thread)}</code></p>
+      <div class="prow phead"><span>option</span><span>probability</span><span class="num">p</span><span class="num logit">logit</span></div>
+      <div class="rows">${rows}</div>${feats}`;
+  },
+  route: (s) => `<span class="route ${s.target}">${s.target === "reflex" ? "⚡ Answer locally with Reflex" : "↗ Escalate to the Nemotron LLM"}</span>
+    <p class="reason">${esc(s.reason)}</p>`,
+  llm: (s) => {
+    if (s.status === "running") return `<p class="sub">Sending the question and the options to <code>${esc(s.model)}</code> via Ollama…</p>`;
+    if (s.status === "error") return `<p class="sub" style="color:var(--err)">${esc(s.message)}</p>`;
+    const p = s.parsed;
+    const verdict = p.decision === "tool" ? `Picked <code>${esc(p.tool)}</code>`
+      : p.decision === "none" ? `None of the options fits${p.suggested_tool ? `; suggests a new tool <code>${esc(p.suggested_tool.name)}</code>: ${esc(p.suggested_tool.description)}` : ""}`
+      : `Reply unusable: ${esc(p.reason)}`;
+    return `<p class="sub"><code>${esc(s.model)}</code> · ${s.prompt_tokens ?? "?"} prompt tokens in, ${s.tokens ?? "?"} out · thinking off</p>
+      <p class="quote">${verdict}</p>${p.reason && p.decision !== "invalid" ? `<p class="reason">“${esc(p.reason)}”</p>` : ""}
+      <details><summary>Raw reply</summary><pre>${esc(s.reply)}</pre></details>`;
+  },
+};
+function renderPipeline() {
+  const t = S.traces.find((x) => x.id === S.selected);
+  highlightChips(t);
+  if (!t) {
+    $("pipe-q").textContent = "Pick or send a message to see each step.";
+    $("steps").innerHTML = "";
+    $("final").innerHTML = "";
+    return;
+  }
+  $("pipe-q").textContent = `“${t.question}” · ${S.domains[t.domain].title}`;
+  let n = 0;
+  $("steps").innerHTML = STEPS.map(([key, title]) => {
+    const s = t.steps[key];
+    if (key === "wait_model" && !s) return "";
+    n += 1;
+    let state = s ? (s.status === "running" ? "running" : s.status === "error" ? "error" : "done") : "pending";
+    let body = s ? RENDER[key](s) : "";
+    if (key === "llm" && t.steps.route && t.steps.route.target === "reflex") {
+      state = "skipped";
+      body = `<p class="sub">Not needed: Reflex was confident enough to answer on its own.</p>`;
+    }
+    const marker = state === "running" ? `<span class="spin"></span>` : state === "done" ? "✓" : state === "error" ? "!" : n;
+    return `<li class="step ${state}"><div class="marker">${marker}</div><div class="body">
+      <div class="row"><h3>${title}</h3><span class="ms">${s && s.ms != null ? fmtMs(s.ms) : ""}</span></div>${body}</div></li>`;
+  }).join("");
+  const f = t.final;
+  $("final").innerHTML = t.error ? `<div class="errbox">${esc(t.error)}</div>` : f ? `<div class="final ${f.source === "reflex" ? "reflex" : f.source === "llm" ? "llm" : ""}">
+      <span class="big ${f.answer === NONE ? "none" : ""}">${esc(f.answer)}</span>${sourceBadge(f)}
+      <span class="total">total ${fmtMs(f.total_ms)}</span></div>` : "";
+}
+
+/* ---------- init ---------- */
+async function init() {
+  S.domains = await (await fetch("/api/domains")).json();
+  $("tabs").innerHTML = Object.entries(S.domains)
+    .map(([k, d]) => `<button class="tab" role="tab" data-key="${k}">${esc(d.title)}</button>`).join("");
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => selectDomain(t.dataset.key)));
+  $("thr").addEventListener("input", (e) => ($("thr-v").textContent = Number(e.target.value).toFixed(2)));
+  $("form").addEventListener("submit", (e) => { e.preventDefault(); send($("q").value); });
+  $("clear").addEventListener("click", () => { S.traces = []; S.selected = null; renderMessages(); renderPipeline(); });
+  selectDomain(Object.keys(S.domains)[0]);
+  renderMessages();
+  renderPipeline();
+  pollStatus();
+  $("q").focus();
+}
+init();
+</script>
+</body>
+</html>

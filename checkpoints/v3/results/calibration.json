@@ -1,0 +1,12 @@
+{
+  "cosine": {
+    "threshold": 0.45667314529418945,
+    "temperature": 0.07079457491636276
+  },
+  "reflex_v3": {
+    "temperature": 0.8128305077552795
+  },
+  "reflex_v3_base": {
+    "temperature": 0.9120108485221863
+  }
+}

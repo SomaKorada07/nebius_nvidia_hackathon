@@ -1,0 +1,276 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1280" viewBox="0 0 1800 1280" role="img" aria-labelledby="title desc">
+  <title id="title">Reflex v3 neural architecture</title>
+  <desc id="desc">End-to-end architecture for an order-invariant open-option classifier. A frozen Nemotron encoder produces query and candidate embeddings. A shared Deep Sets candidate network scores every option, symmetric rank statistics feed a small NONE neural network, and a K plus one softmax chooses a candidate or NONE OF THESE.</desc>
+  <defs>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172554"/>
+      <stop offset="1" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="encoder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d28d9"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="candidate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0891b2"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="none" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e11d48"/>
+      <stop offset="1" stop-color="#be123c"/>
+    </linearGradient>
+    <linearGradient id="output" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16a34a"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+    <marker id="arrowRose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#be123c"/>
+    </marker>
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #172033; }
+      .title { font-size: 31px; font-weight: 760; letter-spacing: -0.4px; fill: #fff; }
+      .subtitle { font-size: 16px; font-weight: 450; fill: #dbeafe; }
+      .panel-title { font-size: 21px; font-weight: 760; }
+      .step { font-size: 12px; font-weight: 800; letter-spacing: 1.1px; text-transform: uppercase; fill: #64748b; }
+      .label { font-size: 15px; font-weight: 680; }
+      .small { font-size: 13px; fill: #475569; }
+      .tiny { font-size: 11px; fill: #64748b; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 13px; }
+      .white { fill: #fff; }
+      .muted-white { fill: #e2e8f0; }
+      .card { fill: #fff; stroke: #dbe2ea; stroke-width: 1.5; filter: url(#shadow); }
+      .soft { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.3; }
+      .edge { fill: none; stroke: #64748b; stroke-width: 1.6; marker-end: url(#arrow); }
+      .edge-teal { fill: none; stroke: #0f766e; stroke-width: 2; marker-end: url(#arrowTeal); }
+      .edge-rose { fill: none; stroke: #be123c; stroke-width: 2; marker-end: url(#arrowRose); }
+      .dense-edge { stroke: #94a3b8; stroke-width: 1; opacity: 0.42; }
+      .dense-edge-rose { stroke: #fb7185; stroke-width: 1; opacity: 0.45; }
+      .neuron-in { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+      .neuron-hidden { fill: #ccfbf1; stroke: #0f766e; stroke-width: 2; }
+      .neuron-none { fill: #ffe4e6; stroke: #e11d48; stroke-width: 2; }
+      .neuron-out { fill: #dcfce7; stroke: #16a34a; stroke-width: 2.2; }
+      .chip { fill: #fff7ed; stroke: #fb923c; stroke-width: 1.2; }
+      .badge { fill: #eef2ff; stroke: #818cf8; stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1280" fill="#f5f7fb"/>
+  <rect x="28" y="24" width="1744" height="88" rx="20" fill="url(#header)"/>
+  <text x="62" y="63" class="title">Reflex v3 · Order-invariant open-option neural selector</text>
+  <text x="62" y="91" class="subtitle">One frozen text encoder + one shared candidate network + one rank-aware NONE network → a variable-size K + 1 decision</text>
+  <rect x="1501" y="46" width="235" height="42" rx="21" fill="#ffffff" fill-opacity="0.13" stroke="#ffffff" stroke-opacity="0.35"/>
+  <text x="1619" y="72" text-anchor="middle" class="label white">Inference architecture</text>
+
+  <!-- End-to-end strip -->
+  <rect x="28" y="132" width="1744" height="338" rx="22" class="card"/>
+  <text x="58" y="168" class="panel-title">A. End-to-end decision path</text>
+  <text x="58" y="193" class="small">Solid arrows are inference. The candidate branch is evaluated independently for every offered option with shared weights.</text>
+
+  <text x="66" y="229" class="step">1 · Text inputs</text>
+  <rect x="58" y="245" width="208" height="67" rx="13" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.4"/>
+  <text x="75" y="270" class="label">Query x</text>
+  <text x="75" y="294" class="small">“Where is my card?”</text>
+  <rect x="58" y="326" width="208" height="96" rx="13" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.4"/>
+  <text x="75" y="350" class="label">Candidate texts</text>
+  <text x="75" y="374" class="mono">o₁, o₂, …, oₖ</text>
+  <text x="75" y="399" class="small">name + description</text>
+
+  <text x="319" y="229" class="step">2 · Frozen encoder</text>
+  <rect x="305" y="245" width="260" height="177" rx="18" fill="url(#encoder)"/>
+  <text x="435" y="278" text-anchor="middle" class="label white">Nemotron-3.5-Embed-1B</text>
+  <text x="435" y="303" text-anchor="middle" class="small muted-white">same encoder for query + options</text>
+  <rect x="330" y="329" width="210" height="33" rx="16" fill="#ffffff" fill-opacity="0.14"/>
+  <text x="435" y="351" text-anchor="middle" class="mono white">s ∈ ℝ²⁰⁴⁸</text>
+  <rect x="330" y="373" width="210" height="33" rx="16" fill="#ffffff" fill-opacity="0.14"/>
+  <text x="435" y="395" text-anchor="middle" class="mono white">cᵢ ∈ ℝ²⁰⁴⁸</text>
+  <text x="435" y="439" text-anchor="middle" class="tiny">L2-normalized · encoder never trains</text>
+
+  <path d="M266 278 L305 278" class="edge"/>
+  <path d="M266 374 L287 374 Q297 374 305 365" class="edge"/>
+
+  <text x="615" y="229" class="step">3 · Shared scorer × K</text>
+  <rect x="602" y="245" width="319" height="177" rx="18" fill="url(#candidate)"/>
+  <text x="761" y="276" text-anchor="middle" class="label white">Deep Sets candidate scorer</text>
+  <text x="761" y="301" text-anchor="middle" class="small muted-white">relation features → φ → mean → ρ</text>
+  <g transform="translate(643 327)">
+    <circle cx="0" cy="0" r="13" fill="#dbeafe" stroke="#fff"/><circle cx="0" cy="42" r="13" fill="#dbeafe" stroke="#fff"/><circle cx="0" cy="84" r="13" fill="#dbeafe" stroke="#fff"/>
+    <circle cx="90" cy="0" r="13" fill="#99f6e4" stroke="#fff"/><circle cx="90" cy="42" r="13" fill="#99f6e4" stroke="#fff"/><circle cx="90" cy="84" r="13" fill="#99f6e4" stroke="#fff"/>
+    <circle cx="185" cy="42" r="16" fill="#fff" stroke="#ccfbf1" stroke-width="2"/>
+    <path d="M13 0 L77 0 M13 0 L77 42 M13 0 L77 84 M13 42 L77 0 M13 42 L77 42 M13 42 L77 84 M13 84 L77 0 M13 84 L77 42 M13 84 L77 84 M103 0 L169 42 M103 42 L169 42 M103 84 L169 42" stroke="#e2e8f0" stroke-width="1.2" opacity="0.9"/>
+    <text x="0" y="115" text-anchor="middle" class="tiny muted-white">8192</text>
+    <text x="90" y="115" text-anchor="middle" class="tiny muted-white">256</text>
+    <text x="185" y="78" text-anchor="middle" class="tiny muted-white">zᵢ</text>
+  </g>
+  <path d="M565 334 L602 334" class="edge-teal"/>
+
+  <text x="968" y="229" class="step">4 · Candidate evidence</text>
+  <rect x="956" y="245" width="187" height="177" rx="18" fill="#ecfeff" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="1049" y="276" text-anchor="middle" class="label">Candidate logits</text>
+  <g transform="translate(988 299)">
+    <rect width="122" height="29" rx="9" fill="#cffafe"/><text x="61" y="20" text-anchor="middle" class="mono">z₁</text>
+    <rect y="38" width="122" height="29" rx="9" fill="#cffafe"/><text x="61" y="58" text-anchor="middle" class="mono">z₂</text>
+    <text x="61" y="86" text-anchor="middle" class="label">⋮</text>
+    <rect y="91" width="122" height="29" rx="9" fill="#cffafe"/><text x="61" y="111" text-anchor="middle" class="mono">zₖ</text>
+  </g>
+  <path d="M921 334 L956 334" class="edge-teal"/>
+
+  <text x="1184" y="229" class="step">5 · Symmetric evidence</text>
+  <rect x="1174" y="245" width="244" height="177" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="1296" y="273" text-anchor="middle" class="label">Six ranking features</text>
+  <text x="1194" y="302" class="small">① top score</text>
+  <text x="1194" y="324" class="small">② top1 − top2</text>
+  <text x="1194" y="346" class="small">③ normalized entropy</text>
+  <text x="1194" y="368" class="small">④ normalized log-sum-exp</text>
+  <text x="1194" y="390" class="small">⑤ max cosine · ⑥ log(1+K)</text>
+  <text x="1296" y="411" text-anchor="middle" class="tiny">scores detached here</text>
+  <path d="M1143 334 L1174 334" class="edge"/>
+
+  <text x="1461" y="229" class="step">6 · Open decision</text>
+  <rect x="1450" y="245" width="286" height="177" rx="18" fill="#fff1f2" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="1512" y="272" text-anchor="middle" class="label">NONE net</text>
+  <g transform="translate(1474 296)">
+    <circle cx="0" cy="0" r="7" class="neuron-none"/><circle cx="0" cy="22" r="7" class="neuron-none"/><circle cx="0" cy="44" r="7" class="neuron-none"/><circle cx="0" cy="66" r="7" class="neuron-none"/><circle cx="0" cy="88" r="7" class="neuron-none"/>
+    <circle cx="48" cy="5" r="7" class="neuron-none"/><circle cx="48" cy="27" r="7" class="neuron-none"/><circle cx="48" cy="49" r="7" class="neuron-none"/><circle cx="48" cy="71" r="7" class="neuron-none"/><circle cx="48" cy="93" r="7" class="neuron-none"/>
+    <circle cx="94" cy="49" r="10" fill="#fff" stroke="#e11d48" stroke-width="2"/>
+    <path d="M7 0 L41 5 M7 0 L41 49 M7 22 L41 27 M7 22 L41 71 M7 44 L41 5 M7 44 L41 49 M7 44 L41 93 M7 66 L41 27 M7 66 L41 71 M7 88 L41 49 M55 5 L84 49 M55 27 L84 49 M55 49 L84 49 M55 71 L84 49 M55 93 L84 49" stroke="#fb7185" stroke-width="1" opacity="0.8"/>
+  </g>
+  <text x="1522" y="405" text-anchor="middle" class="tiny">6 → 16 → 1</text>
+  <rect x="1587" y="276" width="126" height="122" rx="14" fill="url(#output)"/>
+  <text x="1650" y="306" text-anchor="middle" class="small white">K + 1 logits</text>
+  <text x="1650" y="332" text-anchor="middle" class="mono white">z₁…zₖ</text>
+  <text x="1650" y="353" text-anchor="middle" class="mono white">+ z_NONE</text>
+  <line x1="1607" y1="365" x2="1693" y2="365" stroke="#a7f3d0"/>
+  <text x="1650" y="387" text-anchor="middle" class="label white">softmax</text>
+  <path d="M1418 334 L1450 334" class="edge-rose"/>
+  <path d="M1568 345 L1587 345" class="edge-rose"/>
+  <path d="M1143 390 C1220 452 1512 454 1608 398" class="edge-teal"/>
+  <text x="1375" y="449" text-anchor="middle" class="tiny">candidate logits z₁…zₖ bypass the NONE net</text>
+
+  <!-- Candidate scorer zoom -->
+  <rect x="28" y="494" width="1088" height="756" rx="22" class="card"/>
+  <text x="58" y="535" class="panel-title">B. Candidate scorer — a literal neural-network view</text>
+  <text x="58" y="561" class="small">This branch runs K times. Weight sharing makes candidate scores move with the candidates when their order changes.</text>
+
+  <rect x="58" y="584" width="1028" height="58" rx="14" fill="#ecfeff" stroke="#67e8f9"/>
+  <text x="78" y="608" class="label">Relationship tensor for candidate i</text>
+  <text x="78" y="631" class="mono">rᵢ = concat(s, cᵢ, s ⊙ cᵢ, |s − cᵢ|) ∈ ℝ⁸¹⁹²</text>
+
+  <text x="112" y="684" text-anchor="middle" class="step">4 feature groups</text>
+  <text x="335" y="684" text-anchor="middle" class="step">Dense + ReLU</text>
+  <text x="530" y="684" text-anchor="middle" class="step">Dense + ReLU</text>
+  <text x="530" y="704" text-anchor="middle" class="tiny">candidate representation hᵢ</text>
+  <text x="770" y="684" text-anchor="middle" class="step">Set-aware readout</text>
+  <text x="995" y="684" text-anchor="middle" class="step">Candidate logit</text>
+
+  <!-- candidate dense edges feature -> layer 1 -->
+  <path d="M130 735 L310 720 M130 735 L310 755 M130 735 L310 790 M130 735 L310 825 M130 790 L310 720 M130 790 L310 755 M130 790 L310 790 M130 790 L310 825 M130 845 L310 720 M130 845 L310 755 M130 845 L310 790 M130 845 L310 825 M130 900 L310 720 M130 900 L310 755 M130 900 L310 790 M130 900 L310 825" class="dense-edge"/>
+  <!-- layer 1 -> layer 2 -->
+  <path d="M330 720 L510 715 M330 720 L510 748 M330 720 L510 781 M330 720 L510 814 M330 720 L510 847 M330 755 L510 715 M330 755 L510 748 M330 755 L510 781 M330 755 L510 814 M330 755 L510 847 M330 790 L510 715 M330 790 L510 748 M330 790 L510 781 M330 790 L510 814 M330 790 L510 847 M330 825 L510 715 M330 825 L510 748 M330 825 L510 781 M330 825 L510 814 M330 825 L510 847" class="dense-edge"/>
+
+  <!-- relation feature nodes -->
+  <circle cx="112" cy="735" r="20" class="neuron-in"/><text x="112" y="740" text-anchor="middle" class="mono">s</text>
+  <circle cx="112" cy="790" r="20" class="neuron-in"/><text x="112" y="795" text-anchor="middle" class="mono">cᵢ</text>
+  <circle cx="112" cy="845" r="20" class="neuron-in"/><text x="112" y="850" text-anchor="middle" class="mono">⊙</text>
+  <circle cx="112" cy="900" r="20" class="neuron-in"/><text x="112" y="905" text-anchor="middle" class="mono">|−|</text>
+  <text x="112" y="938" text-anchor="middle" class="tiny">4 × 2048 = 8192</text>
+
+  <!-- layer 1 nodes -->
+  <circle cx="320" cy="720" r="11" class="neuron-hidden"/><circle cx="320" cy="755" r="11" class="neuron-hidden"/><circle cx="320" cy="790" r="11" class="neuron-hidden"/><circle cx="320" cy="825" r="11" class="neuron-hidden"/>
+  <text x="320" y="860" text-anchor="middle" class="label">⋮</text><circle cx="320" cy="892" r="11" class="neuron-hidden"/>
+  <text x="320" y="928" text-anchor="middle" class="mono">8192 → 256</text>
+
+  <!-- layer 2 nodes -->
+  <circle cx="520" cy="715" r="11" class="neuron-hidden"/><circle cx="520" cy="748" r="11" class="neuron-hidden"/><circle cx="520" cy="781" r="11" class="neuron-hidden"/><circle cx="520" cy="814" r="11" class="neuron-hidden"/><circle cx="520" cy="847" r="11" class="neuron-hidden"/>
+  <text x="520" y="878" text-anchor="middle" class="label">⋮</text><circle cx="520" cy="907" r="11" class="neuron-hidden"/>
+  <text x="520" y="943" text-anchor="middle" class="mono">256 → 256</text>
+
+  <!-- all-candidate mean summary -->
+  <path d="M545 805 C600 805 599 1008 658 1008" class="edge-teal"/>
+  <rect x="646" y="974" width="205" height="68" rx="18" fill="#ccfbf1" stroke="#14b8a6" stroke-width="1.5"/>
+  <text x="748" y="999" text-anchor="middle" class="label">Order-free set context</text>
+  <text x="748" y="1025" text-anchor="middle" class="mono">g = mean(h₁ … hₖ)</text>
+  <text x="748" y="1066" text-anchor="middle" class="tiny">mean ignores order and supports any K</text>
+
+  <!-- readout inputs and network -->
+  <rect x="650" y="733" width="116" height="48" rx="12" fill="#ecfeff" stroke="#14b8a6"/>
+  <text x="708" y="755" text-anchor="middle" class="mono">[hᵢ, g]</text>
+  <text x="708" y="773" text-anchor="middle" class="tiny">512 values</text>
+  <path d="M545 781 L650 757" class="edge-teal"/>
+  <path d="M748 974 C748 918 708 852 708 781" class="edge-teal"/>
+  <path d="M766 757 L835 728 M766 757 L835 766 M766 757 L835 804 M766 757 L835 842 M766 757 L835 880" class="dense-edge"/>
+  <circle cx="846" cy="728" r="11" class="neuron-hidden"/><circle cx="846" cy="766" r="11" class="neuron-hidden"/><circle cx="846" cy="804" r="11" class="neuron-hidden"/><circle cx="846" cy="842" r="11" class="neuron-hidden"/><circle cx="846" cy="880" r="11" class="neuron-hidden"/>
+  <text x="846" y="920" text-anchor="middle" class="mono">512 → 256</text>
+  <path d="M857 728 L967 804 M857 766 L967 804 M857 804 L967 804 M857 842 L967 804 M857 880 L967 804" class="dense-edge"/>
+  <circle cx="985" cy="804" r="22" fill="#cffafe" stroke="#0891b2" stroke-width="2.5"/>
+  <text x="985" y="810" text-anchor="middle" class="mono">zᵢ</text>
+  <text x="985" y="843" text-anchor="middle" class="tiny">256 → 1</text>
+
+  <rect x="63" y="1097" width="485" height="112" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="84" y="1124" class="label">Why this is permutation-equivariant</text>
+  <text x="84" y="1150" class="small">• φ and ρ are the same networks for every option.</text>
+  <text x="84" y="1175" class="small">• mean(h₁…hₖ) is unchanged by a shuffle.</text>
+  <text x="84" y="1200" class="small">Therefore shuffling options only shuffles z₁…zₖ.</text>
+  <rect x="575" y="1097" width="511" height="112" rx="16" fill="#f0fdfa" stroke="#5eead4"/>
+  <text x="596" y="1124" class="label">Training signals for each candidate score</text>
+  <text x="596" y="1150" class="small">Ranking CE: the present gold should outrank other options.</text>
+  <text x="596" y="1175" class="small">Pair-match BCE: zᵢ has a stable absolute match meaning.</text>
+  <text x="596" y="1200" class="small">That stable scale is what the NONE network reads later.</text>
+
+  <!-- NONE head zoom -->
+  <rect x="1140" y="494" width="632" height="756" rx="22" class="card"/>
+  <text x="1170" y="535" class="panel-title">C. Rank-aware NONE network</text>
+  <text x="1170" y="561" class="small">A tiny neural net learns “is the correct answer available?”</text>
+  <rect x="1170" y="584" width="572" height="58" rx="14" fill="#fff1f2" stroke="#fda4af"/>
+  <text x="1190" y="609" class="label">Input: six symmetric set statistics</text>
+  <text x="1190" y="632" class="small">No raw query embedding · no label identity · no candidate position</text>
+
+  <text x="1284" y="684" text-anchor="middle" class="step">6 inputs</text>
+  <text x="1471" y="684" text-anchor="middle" class="step">Dense + ReLU</text>
+  <text x="1645" y="684" text-anchor="middle" class="step">NONE logit</text>
+
+  <!-- NONE dense connections -->
+  <path d="M1305 721 L1453 711 M1305 721 L1453 749 M1305 721 L1453 787 M1305 721 L1453 825 M1305 721 L1453 863 M1305 766 L1453 711 M1305 766 L1453 749 M1305 766 L1453 787 M1305 766 L1453 825 M1305 766 L1453 863 M1305 811 L1453 711 M1305 811 L1453 749 M1305 811 L1453 787 M1305 811 L1453 825 M1305 811 L1453 863 M1305 856 L1453 711 M1305 856 L1453 749 M1305 856 L1453 787 M1305 856 L1453 825 M1305 856 L1453 863 M1305 901 L1453 711 M1305 901 L1453 749 M1305 901 L1453 787 M1305 901 L1453 825 M1305 901 L1453 863 M1305 946 L1453 711 M1305 946 L1453 749 M1305 946 L1453 787 M1305 946 L1453 825 M1305 946 L1453 863" class="dense-edge-rose"/>
+  <path d="M1477 711 L1622 811 M1477 749 L1622 811 M1477 787 L1622 811 M1477 825 L1622 811 M1477 863 L1622 811 M1477 922 L1622 811" class="dense-edge-rose"/>
+
+  <!-- NONE input nodes + labels -->
+  <text x="1261" y="726" text-anchor="end" class="small">top score</text><circle cx="1293" cy="721" r="12" class="neuron-none"/>
+  <text x="1261" y="771" text-anchor="end" class="small">top1 − top2</text><circle cx="1293" cy="766" r="12" class="neuron-none"/>
+  <text x="1261" y="816" text-anchor="end" class="small">entropy / log K</text><circle cx="1293" cy="811" r="12" class="neuron-none"/>
+  <text x="1261" y="861" text-anchor="end" class="small">LSE − log K</text><circle cx="1293" cy="856" r="12" class="neuron-none"/>
+  <text x="1261" y="906" text-anchor="end" class="small">max cosine</text><circle cx="1293" cy="901" r="12" class="neuron-none"/>
+  <text x="1261" y="951" text-anchor="end" class="small">log(1 + K)</text><circle cx="1293" cy="946" r="12" class="neuron-none"/>
+
+  <!-- NONE hidden -->
+  <circle cx="1465" cy="711" r="12" class="neuron-none"/><circle cx="1465" cy="749" r="12" class="neuron-none"/><circle cx="1465" cy="787" r="12" class="neuron-none"/><circle cx="1465" cy="825" r="12" class="neuron-none"/><circle cx="1465" cy="863" r="12" class="neuron-none"/>
+  <text x="1465" y="896" text-anchor="middle" class="label">⋮</text><circle cx="1465" cy="922" r="12" class="neuron-none"/>
+  <text x="1465" y="957" text-anchor="middle" class="mono">6 → 16</text>
+  <circle cx="1645" cy="811" r="27" fill="#ffe4e6" stroke="#be123c" stroke-width="2.7"/>
+  <text x="1645" y="817" text-anchor="middle" class="mono">zₙ</text>
+  <text x="1645" y="851" text-anchor="middle" class="tiny">16 → 1</text>
+
+  <rect x="1170" y="1001" width="572" height="94" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="1192" y="1028" class="label">Final decision</text>
+  <text x="1192" y="1055" class="mono">p = softmax(([z₁ … zₖ, z_NONE]) / T)</text>
+  <text x="1192" y="1080" class="small">Return argmax: one offered option or NONE_OF_THESE.</text>
+
+  <rect x="1170" y="1112" width="174" height="72" rx="15" class="badge"/>
+  <text x="1257" y="1140" text-anchor="middle" class="label">Variable K</text>
+  <text x="1257" y="1164" text-anchor="middle" class="tiny">mask padded slots</text>
+  <rect x="1354" y="1112" width="174" height="72" rx="15" class="badge"/>
+  <text x="1441" y="1140" text-anchor="middle" class="label">Order-free</text>
+  <text x="1441" y="1164" text-anchor="middle" class="tiny">symmetric stats</text>
+  <rect x="1538" y="1112" width="204" height="72" rx="15" class="badge"/>
+  <text x="1640" y="1140" text-anchor="middle" class="label">129 parameters</text>
+  <text x="1640" y="1164" text-anchor="middle" class="tiny">availability only</text>
+
+  <text x="1170" y="1211" class="tiny">Key separation: the candidate network learns which option matches.</text>
+  <text x="1170" y="1230" class="tiny">The NONE network learns whether any offered option is good enough.</text>
+</svg>

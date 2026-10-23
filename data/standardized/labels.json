@@ -1,0 +1,1137 @@
+{
+  "clinc150:accept_reservations": {
+    "source": "clinc150",
+    "label": "accept_reservations",
+    "group": "seen"
+  },
+  "clinc150:account_blocked": {
+    "source": "clinc150",
+    "label": "account_blocked",
+    "group": "seen"
+  },
+  "clinc150:alarm": {
+    "source": "clinc150",
+    "label": "alarm",
+    "group": "seen"
+  },
+  "clinc150:application_status": {
+    "source": "clinc150",
+    "label": "application_status",
+    "group": "seen"
+  },
+  "clinc150:apr": {
+    "source": "clinc150",
+    "label": "apr",
+    "group": "seen"
+  },
+  "clinc150:are_you_a_bot": {
+    "source": "clinc150",
+    "label": "are_you_a_bot",
+    "group": "seen"
+  },
+  "clinc150:balance": {
+    "source": "clinc150",
+    "label": "balance",
+    "group": "seen"
+  },
+  "clinc150:bill_balance": {
+    "source": "clinc150",
+    "label": "bill_balance",
+    "group": "seen"
+  },
+  "clinc150:bill_due": {
+    "source": "clinc150",
+    "label": "bill_due",
+    "group": "seen"
+  },
+  "clinc150:book_flight": {
+    "source": "clinc150",
+    "label": "book_flight",
+    "group": "seen"
+  },
+  "clinc150:book_hotel": {
+    "source": "clinc150",
+    "label": "book_hotel",
+    "group": "seen"
+  },
+  "clinc150:calculator": {
+    "source": "clinc150",
+    "label": "calculator",
+    "group": "seen"
+  },
+  "clinc150:calendar": {
+    "source": "clinc150",
+    "label": "calendar",
+    "group": "seen"
+  },
+  "clinc150:calendar_update": {
+    "source": "clinc150",
+    "label": "calendar_update",
+    "group": "seen"
+  },
+  "clinc150:calories": {
+    "source": "clinc150",
+    "label": "calories",
+    "group": "seen"
+  },
+  "clinc150:cancel": {
+    "source": "clinc150",
+    "label": "cancel",
+    "group": "seen"
+  },
+  "clinc150:cancel_reservation": {
+    "source": "clinc150",
+    "label": "cancel_reservation",
+    "group": "unseen"
+  },
+  "clinc150:car_rental": {
+    "source": "clinc150",
+    "label": "car_rental",
+    "group": "seen"
+  },
+  "clinc150:card_declined": {
+    "source": "clinc150",
+    "label": "card_declined",
+    "group": "seen"
+  },
+  "clinc150:carry_on": {
+    "source": "clinc150",
+    "label": "carry_on",
+    "group": "unseen"
+  },
+  "clinc150:change_accent": {
+    "source": "clinc150",
+    "label": "change_accent",
+    "group": "seen"
+  },
+  "clinc150:change_ai_name": {
+    "source": "clinc150",
+    "label": "change_ai_name",
+    "group": "unseen"
+  },
+  "clinc150:change_language": {
+    "source": "clinc150",
+    "label": "change_language",
+    "group": "seen"
+  },
+  "clinc150:change_speed": {
+    "source": "clinc150",
+    "label": "change_speed",
+    "group": "seen"
+  },
+  "clinc150:change_user_name": {
+    "source": "clinc150",
+    "label": "change_user_name",
+    "group": "seen"
+  },
+  "clinc150:change_volume": {
+    "source": "clinc150",
+    "label": "change_volume",
+    "group": "unseen"
+  },
+  "clinc150:confirm_reservation": {
+    "source": "clinc150",
+    "label": "confirm_reservation",
+    "group": "seen"
+  },
+  "clinc150:cook_time": {
+    "source": "clinc150",
+    "label": "cook_time",
+    "group": "seen"
+  },
+  "clinc150:credit_limit": {
+    "source": "clinc150",
+    "label": "credit_limit",
+    "group": "seen"
+  },
+  "clinc150:credit_limit_change": {
+    "source": "clinc150",
+    "label": "credit_limit_change",
+    "group": "unseen"
+  },
+  "clinc150:credit_score": {
+    "source": "clinc150",
+    "label": "credit_score",
+    "group": "unseen"
+  },
+  "clinc150:current_location": {
+    "source": "clinc150",
+    "label": "current_location",
+    "group": "unseen"
+  },
+  "clinc150:damaged_card": {
+    "source": "clinc150",
+    "label": "damaged_card",
+    "group": "seen"
+  },
+  "clinc150:date": {
+    "source": "clinc150",
+    "label": "date",
+    "group": "seen"
+  },
+  "clinc150:definition": {
+    "source": "clinc150",
+    "label": "definition",
+    "group": "seen"
+  },
+  "clinc150:direct_deposit": {
+    "source": "clinc150",
+    "label": "direct_deposit",
+    "group": "seen"
+  },
+  "clinc150:directions": {
+    "source": "clinc150",
+    "label": "directions",
+    "group": "unseen"
+  },
+  "clinc150:distance": {
+    "source": "clinc150",
+    "label": "distance",
+    "group": "seen"
+  },
+  "clinc150:do_you_have_pets": {
+    "source": "clinc150",
+    "label": "do_you_have_pets",
+    "group": "seen"
+  },
+  "clinc150:exchange_rate": {
+    "source": "clinc150",
+    "label": "exchange_rate",
+    "group": "seen"
+  },
+  "clinc150:expiration_date": {
+    "source": "clinc150",
+    "label": "expiration_date",
+    "group": "seen"
+  },
+  "clinc150:find_phone": {
+    "source": "clinc150",
+    "label": "find_phone",
+    "group": "unseen"
+  },
+  "clinc150:flight_status": {
+    "source": "clinc150",
+    "label": "flight_status",
+    "group": "seen"
+  },
+  "clinc150:flip_coin": {
+    "source": "clinc150",
+    "label": "flip_coin",
+    "group": "seen"
+  },
+  "clinc150:food_last": {
+    "source": "clinc150",
+    "label": "food_last",
+    "group": "seen"
+  },
+  "clinc150:freeze_account": {
+    "source": "clinc150",
+    "label": "freeze_account",
+    "group": "seen"
+  },
+  "clinc150:fun_fact": {
+    "source": "clinc150",
+    "label": "fun_fact",
+    "group": "seen"
+  },
+  "clinc150:gas": {
+    "source": "clinc150",
+    "label": "gas",
+    "group": "seen"
+  },
+  "clinc150:gas_type": {
+    "source": "clinc150",
+    "label": "gas_type",
+    "group": "unseen"
+  },
+  "clinc150:goodbye": {
+    "source": "clinc150",
+    "label": "goodbye",
+    "group": "seen"
+  },
+  "clinc150:greeting": {
+    "source": "clinc150",
+    "label": "greeting",
+    "group": "seen"
+  },
+  "clinc150:how_busy": {
+    "source": "clinc150",
+    "label": "how_busy",
+    "group": "seen"
+  },
+  "clinc150:how_old_are_you": {
+    "source": "clinc150",
+    "label": "how_old_are_you",
+    "group": "seen"
+  },
+  "clinc150:improve_credit_score": {
+    "source": "clinc150",
+    "label": "improve_credit_score",
+    "group": "seen"
+  },
+  "clinc150:income": {
+    "source": "clinc150",
+    "label": "income",
+    "group": "seen"
+  },
+  "clinc150:ingredient_substitution": {
+    "source": "clinc150",
+    "label": "ingredient_substitution",
+    "group": "seen"
+  },
+  "clinc150:ingredients_list": {
+    "source": "clinc150",
+    "label": "ingredients_list",
+    "group": "seen"
+  },
+  "clinc150:insurance": {
+    "source": "clinc150",
+    "label": "insurance",
+    "group": "seen"
+  },
+  "clinc150:insurance_change": {
+    "source": "clinc150",
+    "label": "insurance_change",
+    "group": "seen"
+  },
+  "clinc150:interest_rate": {
+    "source": "clinc150",
+    "label": "interest_rate",
+    "group": "seen"
+  },
+  "clinc150:international_fees": {
+    "source": "clinc150",
+    "label": "international_fees",
+    "group": "seen"
+  },
+  "clinc150:international_visa": {
+    "source": "clinc150",
+    "label": "international_visa",
+    "group": "unseen"
+  },
+  "clinc150:jump_start": {
+    "source": "clinc150",
+    "label": "jump_start",
+    "group": "seen"
+  },
+  "clinc150:last_maintenance": {
+    "source": "clinc150",
+    "label": "last_maintenance",
+    "group": "seen"
+  },
+  "clinc150:lost_luggage": {
+    "source": "clinc150",
+    "label": "lost_luggage",
+    "group": "seen"
+  },
+  "clinc150:make_call": {
+    "source": "clinc150",
+    "label": "make_call",
+    "group": "unseen"
+  },
+  "clinc150:maybe": {
+    "source": "clinc150",
+    "label": "maybe",
+    "group": "seen"
+  },
+  "clinc150:meal_suggestion": {
+    "source": "clinc150",
+    "label": "meal_suggestion",
+    "group": "seen"
+  },
+  "clinc150:meaning_of_life": {
+    "source": "clinc150",
+    "label": "meaning_of_life",
+    "group": "seen"
+  },
+  "clinc150:measurement_conversion": {
+    "source": "clinc150",
+    "label": "measurement_conversion",
+    "group": "seen"
+  },
+  "clinc150:meeting_schedule": {
+    "source": "clinc150",
+    "label": "meeting_schedule",
+    "group": "seen"
+  },
+  "clinc150:min_payment": {
+    "source": "clinc150",
+    "label": "min_payment",
+    "group": "unseen"
+  },
+  "clinc150:mpg": {
+    "source": "clinc150",
+    "label": "mpg",
+    "group": "seen"
+  },
+  "clinc150:new_card": {
+    "source": "clinc150",
+    "label": "new_card",
+    "group": "seen"
+  },
+  "clinc150:next_holiday": {
+    "source": "clinc150",
+    "label": "next_holiday",
+    "group": "unseen"
+  },
+  "clinc150:next_song": {
+    "source": "clinc150",
+    "label": "next_song",
+    "group": "seen"
+  },
+  "clinc150:no": {
+    "source": "clinc150",
+    "label": "no",
+    "group": "unseen"
+  },
+  "clinc150:nutrition_info": {
+    "source": "clinc150",
+    "label": "nutrition_info",
+    "group": "seen"
+  },
+  "clinc150:oil_change_how": {
+    "source": "clinc150",
+    "label": "oil_change_how",
+    "group": "seen"
+  },
+  "clinc150:oil_change_when": {
+    "source": "clinc150",
+    "label": "oil_change_when",
+    "group": "seen"
+  },
+  "clinc150:order": {
+    "source": "clinc150",
+    "label": "order",
+    "group": "seen"
+  },
+  "clinc150:order_checks": {
+    "source": "clinc150",
+    "label": "order_checks",
+    "group": "seen"
+  },
+  "clinc150:order_status": {
+    "source": "clinc150",
+    "label": "order_status",
+    "group": "seen"
+  },
+  "clinc150:pay_bill": {
+    "source": "clinc150",
+    "label": "pay_bill",
+    "group": "unseen"
+  },
+  "clinc150:payday": {
+    "source": "clinc150",
+    "label": "payday",
+    "group": "seen"
+  },
+  "clinc150:pin_change": {
+    "source": "clinc150",
+    "label": "pin_change",
+    "group": "seen"
+  },
+  "clinc150:play_music": {
+    "source": "clinc150",
+    "label": "play_music",
+    "group": "seen"
+  },
+  "clinc150:plug_type": {
+    "source": "clinc150",
+    "label": "plug_type",
+    "group": "seen"
+  },
+  "clinc150:pto_balance": {
+    "source": "clinc150",
+    "label": "pto_balance",
+    "group": "seen"
+  },
+  "clinc150:pto_request": {
+    "source": "clinc150",
+    "label": "pto_request",
+    "group": "seen"
+  },
+  "clinc150:pto_request_status": {
+    "source": "clinc150",
+    "label": "pto_request_status",
+    "group": "seen"
+  },
+  "clinc150:pto_used": {
+    "source": "clinc150",
+    "label": "pto_used",
+    "group": "unseen"
+  },
+  "clinc150:recipe": {
+    "source": "clinc150",
+    "label": "recipe",
+    "group": "unseen"
+  },
+  "clinc150:redeem_rewards": {
+    "source": "clinc150",
+    "label": "redeem_rewards",
+    "group": "seen"
+  },
+  "clinc150:reminder": {
+    "source": "clinc150",
+    "label": "reminder",
+    "group": "seen"
+  },
+  "clinc150:reminder_update": {
+    "source": "clinc150",
+    "label": "reminder_update",
+    "group": "seen"
+  },
+  "clinc150:repeat": {
+    "source": "clinc150",
+    "label": "repeat",
+    "group": "seen"
+  },
+  "clinc150:replacement_card_duration": {
+    "source": "clinc150",
+    "label": "replacement_card_duration",
+    "group": "seen"
+  },
+  "clinc150:report_fraud": {
+    "source": "clinc150",
+    "label": "report_fraud",
+    "group": "seen"
+  },
+  "clinc150:report_lost_card": {
+    "source": "clinc150",
+    "label": "report_lost_card",
+    "group": "seen"
+  },
+  "clinc150:reset_settings": {
+    "source": "clinc150",
+    "label": "reset_settings",
+    "group": "seen"
+  },
+  "clinc150:restaurant_reservation": {
+    "source": "clinc150",
+    "label": "restaurant_reservation",
+    "group": "unseen"
+  },
+  "clinc150:restaurant_reviews": {
+    "source": "clinc150",
+    "label": "restaurant_reviews",
+    "group": "seen"
+  },
+  "clinc150:restaurant_suggestion": {
+    "source": "clinc150",
+    "label": "restaurant_suggestion",
+    "group": "seen"
+  },
+  "clinc150:rewards_balance": {
+    "source": "clinc150",
+    "label": "rewards_balance",
+    "group": "unseen"
+  },
+  "clinc150:roll_dice": {
+    "source": "clinc150",
+    "label": "roll_dice",
+    "group": "unseen"
+  },
+  "clinc150:rollover_401k": {
+    "source": "clinc150",
+    "label": "rollover_401k",
+    "group": "seen"
+  },
+  "clinc150:routing": {
+    "source": "clinc150",
+    "label": "routing",
+    "group": "seen"
+  },
+  "clinc150:schedule_maintenance": {
+    "source": "clinc150",
+    "label": "schedule_maintenance",
+    "group": "seen"
+  },
+  "clinc150:schedule_meeting": {
+    "source": "clinc150",
+    "label": "schedule_meeting",
+    "group": "unseen"
+  },
+  "clinc150:share_location": {
+    "source": "clinc150",
+    "label": "share_location",
+    "group": "seen"
+  },
+  "clinc150:shopping_list": {
+    "source": "clinc150",
+    "label": "shopping_list",
+    "group": "unseen"
+  },
+  "clinc150:shopping_list_update": {
+    "source": "clinc150",
+    "label": "shopping_list_update",
+    "group": "seen"
+  },
+  "clinc150:smart_home": {
+    "source": "clinc150",
+    "label": "smart_home",
+    "group": "unseen"
+  },
+  "clinc150:spelling": {
+    "source": "clinc150",
+    "label": "spelling",
+    "group": "seen"
+  },
+  "clinc150:spending_history": {
+    "source": "clinc150",
+    "label": "spending_history",
+    "group": "unseen"
+  },
+  "clinc150:sync_device": {
+    "source": "clinc150",
+    "label": "sync_device",
+    "group": "seen"
+  },
+  "clinc150:taxes": {
+    "source": "clinc150",
+    "label": "taxes",
+    "group": "seen"
+  },
+  "clinc150:tell_joke": {
+    "source": "clinc150",
+    "label": "tell_joke",
+    "group": "seen"
+  },
+  "clinc150:text": {
+    "source": "clinc150",
+    "label": "text",
+    "group": "seen"
+  },
+  "clinc150:thank_you": {
+    "source": "clinc150",
+    "label": "thank_you",
+    "group": "seen"
+  },
+  "clinc150:time": {
+    "source": "clinc150",
+    "label": "time",
+    "group": "seen"
+  },
+  "clinc150:timer": {
+    "source": "clinc150",
+    "label": "timer",
+    "group": "seen"
+  },
+  "clinc150:timezone": {
+    "source": "clinc150",
+    "label": "timezone",
+    "group": "seen"
+  },
+  "clinc150:tire_change": {
+    "source": "clinc150",
+    "label": "tire_change",
+    "group": "seen"
+  },
+  "clinc150:tire_pressure": {
+    "source": "clinc150",
+    "label": "tire_pressure",
+    "group": "seen"
+  },
+  "clinc150:todo_list": {
+    "source": "clinc150",
+    "label": "todo_list",
+    "group": "unseen"
+  },
+  "clinc150:todo_list_update": {
+    "source": "clinc150",
+    "label": "todo_list_update",
+    "group": "seen"
+  },
+  "clinc150:traffic": {
+    "source": "clinc150",
+    "label": "traffic",
+    "group": "seen"
+  },
+  "clinc150:transactions": {
+    "source": "clinc150",
+    "label": "transactions",
+    "group": "seen"
+  },
+  "clinc150:transfer": {
+    "source": "clinc150",
+    "label": "transfer",
+    "group": "seen"
+  },
+  "clinc150:translate": {
+    "source": "clinc150",
+    "label": "translate",
+    "group": "seen"
+  },
+  "clinc150:travel_alert": {
+    "source": "clinc150",
+    "label": "travel_alert",
+    "group": "unseen"
+  },
+  "clinc150:travel_notification": {
+    "source": "clinc150",
+    "label": "travel_notification",
+    "group": "seen"
+  },
+  "clinc150:travel_suggestion": {
+    "source": "clinc150",
+    "label": "travel_suggestion",
+    "group": "seen"
+  },
+  "clinc150:uber": {
+    "source": "clinc150",
+    "label": "uber",
+    "group": "seen"
+  },
+  "clinc150:update_playlist": {
+    "source": "clinc150",
+    "label": "update_playlist",
+    "group": "seen"
+  },
+  "clinc150:user_name": {
+    "source": "clinc150",
+    "label": "user_name",
+    "group": "seen"
+  },
+  "clinc150:vaccines": {
+    "source": "clinc150",
+    "label": "vaccines",
+    "group": "seen"
+  },
+  "clinc150:w2": {
+    "source": "clinc150",
+    "label": "w2",
+    "group": "seen"
+  },
+  "clinc150:weather": {
+    "source": "clinc150",
+    "label": "weather",
+    "group": "seen"
+  },
+  "clinc150:what_are_your_hobbies": {
+    "source": "clinc150",
+    "label": "what_are_your_hobbies",
+    "group": "seen"
+  },
+  "clinc150:what_can_i_ask_you": {
+    "source": "clinc150",
+    "label": "what_can_i_ask_you",
+    "group": "unseen"
+  },
+  "clinc150:what_is_your_name": {
+    "source": "clinc150",
+    "label": "what_is_your_name",
+    "group": "unseen"
+  },
+  "clinc150:what_song": {
+    "source": "clinc150",
+    "label": "what_song",
+    "group": "seen"
+  },
+  "clinc150:where_are_you_from": {
+    "source": "clinc150",
+    "label": "where_are_you_from",
+    "group": "seen"
+  },
+  "clinc150:whisper_mode": {
+    "source": "clinc150",
+    "label": "whisper_mode",
+    "group": "seen"
+  },
+  "clinc150:who_do_you_work_for": {
+    "source": "clinc150",
+    "label": "who_do_you_work_for",
+    "group": "unseen"
+  },
+  "clinc150:who_made_you": {
+    "source": "clinc150",
+    "label": "who_made_you",
+    "group": "seen"
+  },
+  "clinc150:yes": {
+    "source": "clinc150",
+    "label": "yes",
+    "group": "seen"
+  },
+  "banking77:Refund_not_showing_up": {
+    "source": "banking77",
+    "label": "Refund_not_showing_up",
+    "group": "seen"
+  },
+  "banking77:activate_my_card": {
+    "source": "banking77",
+    "label": "activate_my_card",
+    "group": "seen"
+  },
+  "banking77:age_limit": {
+    "source": "banking77",
+    "label": "age_limit",
+    "group": "seen"
+  },
+  "banking77:apple_pay_or_google_pay": {
+    "source": "banking77",
+    "label": "apple_pay_or_google_pay",
+    "group": "unseen"
+  },
+  "banking77:atm_support": {
+    "source": "banking77",
+    "label": "atm_support",
+    "group": "seen"
+  },
+  "banking77:automatic_top_up": {
+    "source": "banking77",
+    "label": "automatic_top_up",
+    "group": "seen"
+  },
+  "banking77:balance_not_updated_after_bank_transfer": {
+    "source": "banking77",
+    "label": "balance_not_updated_after_bank_transfer",
+    "group": "seen"
+  },
+  "banking77:balance_not_updated_after_cheque_or_cash_deposit": {
+    "source": "banking77",
+    "label": "balance_not_updated_after_cheque_or_cash_deposit",
+    "group": "seen"
+  },
+  "banking77:beneficiary_not_allowed": {
+    "source": "banking77",
+    "label": "beneficiary_not_allowed",
+    "group": "seen"
+  },
+  "banking77:cancel_transfer": {
+    "source": "banking77",
+    "label": "cancel_transfer",
+    "group": "seen"
+  },
+  "banking77:card_about_to_expire": {
+    "source": "banking77",
+    "label": "card_about_to_expire",
+    "group": "seen"
+  },
+  "banking77:card_acceptance": {
+    "source": "banking77",
+    "label": "card_acceptance",
+    "group": "seen"
+  },
+  "banking77:card_arrival": {
+    "source": "banking77",
+    "label": "card_arrival",
+    "group": "seen"
+  },
+  "banking77:card_delivery_estimate": {
+    "source": "banking77",
+    "label": "card_delivery_estimate",
+    "group": "seen"
+  },
+  "banking77:card_linking": {
+    "source": "banking77",
+    "label": "card_linking",
+    "group": "unseen"
+  },
+  "banking77:card_not_working": {
+    "source": "banking77",
+    "label": "card_not_working",
+    "group": "seen"
+  },
+  "banking77:card_payment_fee_charged": {
+    "source": "banking77",
+    "label": "card_payment_fee_charged",
+    "group": "seen"
+  },
+  "banking77:card_payment_not_recognised": {
+    "source": "banking77",
+    "label": "card_payment_not_recognised",
+    "group": "seen"
+  },
+  "banking77:card_payment_wrong_exchange_rate": {
+    "source": "banking77",
+    "label": "card_payment_wrong_exchange_rate",
+    "group": "seen"
+  },
+  "banking77:card_swallowed": {
+    "source": "banking77",
+    "label": "card_swallowed",
+    "group": "seen"
+  },
+  "banking77:cash_withdrawal_charge": {
+    "source": "banking77",
+    "label": "cash_withdrawal_charge",
+    "group": "seen"
+  },
+  "banking77:cash_withdrawal_not_recognised": {
+    "source": "banking77",
+    "label": "cash_withdrawal_not_recognised",
+    "group": "seen"
+  },
+  "banking77:change_pin": {
+    "source": "banking77",
+    "label": "change_pin",
+    "group": "unseen"
+  },
+  "banking77:compromised_card": {
+    "source": "banking77",
+    "label": "compromised_card",
+    "group": "seen"
+  },
+  "banking77:contactless_not_working": {
+    "source": "banking77",
+    "label": "contactless_not_working",
+    "group": "seen"
+  },
+  "banking77:country_support": {
+    "source": "banking77",
+    "label": "country_support",
+    "group": "seen"
+  },
+  "banking77:declined_card_payment": {
+    "source": "banking77",
+    "label": "declined_card_payment",
+    "group": "seen"
+  },
+  "banking77:declined_cash_withdrawal": {
+    "source": "banking77",
+    "label": "declined_cash_withdrawal",
+    "group": "seen"
+  },
+  "banking77:declined_transfer": {
+    "source": "banking77",
+    "label": "declined_transfer",
+    "group": "seen"
+  },
+  "banking77:direct_debit_payment_not_recognised": {
+    "source": "banking77",
+    "label": "direct_debit_payment_not_recognised",
+    "group": "seen"
+  },
+  "banking77:disposable_card_limits": {
+    "source": "banking77",
+    "label": "disposable_card_limits",
+    "group": "seen"
+  },
+  "banking77:edit_personal_details": {
+    "source": "banking77",
+    "label": "edit_personal_details",
+    "group": "unseen"
+  },
+  "banking77:exchange_charge": {
+    "source": "banking77",
+    "label": "exchange_charge",
+    "group": "unseen"
+  },
+  "banking77:exchange_rate": {
+    "source": "banking77",
+    "label": "exchange_rate",
+    "group": "seen"
+  },
+  "banking77:exchange_via_app": {
+    "source": "banking77",
+    "label": "exchange_via_app",
+    "group": "seen"
+  },
+  "banking77:extra_charge_on_statement": {
+    "source": "banking77",
+    "label": "extra_charge_on_statement",
+    "group": "unseen"
+  },
+  "banking77:failed_transfer": {
+    "source": "banking77",
+    "label": "failed_transfer",
+    "group": "seen"
+  },
+  "banking77:fiat_currency_support": {
+    "source": "banking77",
+    "label": "fiat_currency_support",
+    "group": "unseen"
+  },
+  "banking77:get_disposable_virtual_card": {
+    "source": "banking77",
+    "label": "get_disposable_virtual_card",
+    "group": "unseen"
+  },
+  "banking77:get_physical_card": {
+    "source": "banking77",
+    "label": "get_physical_card",
+    "group": "seen"
+  },
+  "banking77:getting_spare_card": {
+    "source": "banking77",
+    "label": "getting_spare_card",
+    "group": "seen"
+  },
+  "banking77:getting_virtual_card": {
+    "source": "banking77",
+    "label": "getting_virtual_card",
+    "group": "seen"
+  },
+  "banking77:lost_or_stolen_card": {
+    "source": "banking77",
+    "label": "lost_or_stolen_card",
+    "group": "seen"
+  },
+  "banking77:lost_or_stolen_phone": {
+    "source": "banking77",
+    "label": "lost_or_stolen_phone",
+    "group": "seen"
+  },
+  "banking77:order_physical_card": {
+    "source": "banking77",
+    "label": "order_physical_card",
+    "group": "seen"
+  },
+  "banking77:passcode_forgotten": {
+    "source": "banking77",
+    "label": "passcode_forgotten",
+    "group": "seen"
+  },
+  "banking77:pending_card_payment": {
+    "source": "banking77",
+    "label": "pending_card_payment",
+    "group": "unseen"
+  },
+  "banking77:pending_cash_withdrawal": {
+    "source": "banking77",
+    "label": "pending_cash_withdrawal",
+    "group": "seen"
+  },
+  "banking77:pending_top_up": {
+    "source": "banking77",
+    "label": "pending_top_up",
+    "group": "seen"
+  },
+  "banking77:pending_transfer": {
+    "source": "banking77",
+    "label": "pending_transfer",
+    "group": "unseen"
+  },
+  "banking77:pin_blocked": {
+    "source": "banking77",
+    "label": "pin_blocked",
+    "group": "seen"
+  },
+  "banking77:receiving_money": {
+    "source": "banking77",
+    "label": "receiving_money",
+    "group": "seen"
+  },
+  "banking77:request_refund": {
+    "source": "banking77",
+    "label": "request_refund",
+    "group": "seen"
+  },
+  "banking77:reverted_card_payment?": {
+    "source": "banking77",
+    "label": "reverted_card_payment?",
+    "group": "unseen"
+  },
+  "banking77:supported_cards_and_currencies": {
+    "source": "banking77",
+    "label": "supported_cards_and_currencies",
+    "group": "seen"
+  },
+  "banking77:terminate_account": {
+    "source": "banking77",
+    "label": "terminate_account",
+    "group": "unseen"
+  },
+  "banking77:top_up_by_bank_transfer_charge": {
+    "source": "banking77",
+    "label": "top_up_by_bank_transfer_charge",
+    "group": "seen"
+  },
+  "banking77:top_up_by_card_charge": {
+    "source": "banking77",
+    "label": "top_up_by_card_charge",
+    "group": "seen"
+  },
+  "banking77:top_up_by_cash_or_cheque": {
+    "source": "banking77",
+    "label": "top_up_by_cash_or_cheque",
+    "group": "seen"
+  },
+  "banking77:top_up_failed": {
+    "source": "banking77",
+    "label": "top_up_failed",
+    "group": "seen"
+  },
+  "banking77:top_up_limits": {
+    "source": "banking77",
+    "label": "top_up_limits",
+    "group": "seen"
+  },
+  "banking77:top_up_reverted": {
+    "source": "banking77",
+    "label": "top_up_reverted",
+    "group": "seen"
+  },
+  "banking77:topping_up_by_card": {
+    "source": "banking77",
+    "label": "topping_up_by_card",
+    "group": "seen"
+  },
+  "banking77:transaction_charged_twice": {
+    "source": "banking77",
+    "label": "transaction_charged_twice",
+    "group": "seen"
+  },
+  "banking77:transfer_fee_charged": {
+    "source": "banking77",
+    "label": "transfer_fee_charged",
+    "group": "seen"
+  },
+  "banking77:transfer_into_account": {
+    "source": "banking77",
+    "label": "transfer_into_account",
+    "group": "seen"
+  },
+  "banking77:transfer_not_received_by_recipient": {
+    "source": "banking77",
+    "label": "transfer_not_received_by_recipient",
+    "group": "unseen"
+  },
+  "banking77:transfer_timing": {
+    "source": "banking77",
+    "label": "transfer_timing",
+    "group": "seen"
+  },
+  "banking77:unable_to_verify_identity": {
+    "source": "banking77",
+    "label": "unable_to_verify_identity",
+    "group": "seen"
+  },
+  "banking77:verify_my_identity": {
+    "source": "banking77",
+    "label": "verify_my_identity",
+    "group": "unseen"
+  },
+  "banking77:verify_source_of_funds": {
+    "source": "banking77",
+    "label": "verify_source_of_funds",
+    "group": "seen"
+  },
+  "banking77:verify_top_up": {
+    "source": "banking77",
+    "label": "verify_top_up",
+    "group": "seen"
+  },
+  "banking77:virtual_card_not_working": {
+    "source": "banking77",
+    "label": "virtual_card_not_working",
+    "group": "seen"
+  },
+  "banking77:visa_or_mastercard": {
+    "source": "banking77",
+    "label": "visa_or_mastercard",
+    "group": "seen"
+  },
+  "banking77:why_verify_identity": {
+    "source": "banking77",
+    "label": "why_verify_identity",
+    "group": "seen"
+  },
+  "banking77:wrong_amount_of_cash_received": {
+    "source": "banking77",
+    "label": "wrong_amount_of_cash_received",
+    "group": "unseen"
+  },
+  "banking77:wrong_exchange_rate_for_cash_withdrawal": {
+    "source": "banking77",
+    "label": "wrong_exchange_rate_for_cash_withdrawal",
+    "group": "seen"
+  }
+}
