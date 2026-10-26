@@ -43,7 +43,9 @@ Reflex is built to fix both:
   vectors once, and a small head of about 2–3 M parameters makes the decision.
 
 The intended use is a fast local first pass, with uncertain cases passed on to a bigger model.
-That routing step is not built.
+The demo in `demo/` does this. When Reflex answers `NONE_OF_THESE`, or its best option is below a
+confidence threshold, the question goes to a Nemotron LLM (`nvidia/Nemotron-3_5-Lightning` on
+Nebius Token Factory). The LLM picks an option or suggests the one that is missing.
 
 ## 2. How Reflex is tested
 
@@ -299,7 +301,9 @@ in both scorers. Without it, the NONE head trained in step 2 doesn't fit the ste
 - **New labels with the answer present (about 81%) are the main gap.** The model ranks the right
   option first about 94% of the time, but then often doubts it. The fix probably belongs in the
   scorer: more varied label descriptions during training, or adapting the encoder itself.
-- **Routing to a bigger model** for uncertain cases is not built.
+- **The routing threshold is not tuned.** The demo sends a question to the LLM when Reflex's best
+  option is below a fixed threshold (0.70 by default). It should be chosen from the rejection
+  trade-off in `checkpoints/v3/REPORT.md` §4.8, for example to meet a false-accept budget.
 - **The test split** has not been used. v1–v3 should be evaluated on it together, once.
 
 ## 8. Where to find things
@@ -310,5 +314,6 @@ in both scorers. Without it, the NONE head trained in step 2 doesn't fit the ste
 | Model code | `src/models.py` (`ReflexSetHead` = v1/v2, `ReflexRankingHead` = v3) |
 | Scoring new questions and options | `src/predict.py`; see `examples/README.md` |
 | Example requests | `examples/predict_requests.jsonl`, `examples/customer_service_tools.jsonl` |
+| Demo: Reflex with the Nemotron LLM fallback on Token Factory | `demo/`; see `demo/README.md` |
 | Architecture diagrams | `docs/figures/`: v1 and v2 PNGs (regenerate with `.venv/bin/python docs/make_diagrams.py`), v3 `reflex_v3_architecture.svg` and `reflex_v3_training.svg` |
 | Original hackathon specification | earlier versions of this file in git history (`git show v3:reflex_model.md`); the reports' "Deviations from `reflex_model.md`" sections refer to it |

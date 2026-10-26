@@ -9,6 +9,8 @@ Reflex is a small learned head (2.3 M parameters) on top of the frozen **NVIDIA 
 
 It runs locally and routes a message in about 50–120 ms. Requests it is unsure about go to a **Nemotron LLM**, which either picks a tool or proposes the tool that is missing.
 
+**Live demo:** https://knowing-hermit-hideously.ngrok-free.app. ngrok shows a one-time warning page first; click **Visit Site** to continue.
+
 ![Reflex demo](docs/figures/demo.png)
 
 ## How it works
@@ -156,3 +158,7 @@ Batch scoring from JSONL files and all command-line options are covered in [exam
 - **Typed Decisions:** [LocalLLaMA/typed-decisions](https://huggingface.co/datasets/LocalLLaMA/typed-decisions) on Hugging Face. Apache-2.0.
 - **API-Bank:** Li et al., "API-Bank: A Comprehensive Benchmark for Tool-Augmented LLMs", EMNLP 2023. [liminghao1630/API-Bank](https://huggingface.co/datasets/liminghao1630/API-Bank) on Hugging Face.
 - **Nemotron Embed 1B:** NVIDIA, under the [OpenMDW 1.1](https://openmdw.ai/license/1-1/) license. It is downloaded by `download_model.py`, not included in this repository.
+
+## License
+
+The code is licensed under the [Apache License 2.0](LICENSE). The datasets and the Nemotron model keep their own licenses, listed under Credits.

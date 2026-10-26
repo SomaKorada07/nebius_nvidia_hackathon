@@ -22,6 +22,9 @@ Settings are read from the shell or from `.env` in the repository root. Shell va
 
 ## What happens on each question
 
+- **Training coverage.** Each domain is tagged *trained* or *unseen*. The server works this out at startup from the v3 label split, `data/processed/v3_split.json`.
+  - *Unseen:* Customer service, whose 10 tools were written for the demo.
+  - *Trained:* Banking, Smart assistant and Travel & dining. Within these domains, an option Reflex never saw is marked *held out* (one of the 45 labels kept out of training) or *new* (not a dataset label).
 - **No history.** Every question is routed on its own.
 - **No cache.** The question and every option of the domain are embedded again on every request.
 - **Model thread.** Loading, embedding and scoring all run on one worker thread (`reflex-model_0`), never on the web server's event loop. The page stays responsive while the model loads or embeds.

@@ -55,7 +55,26 @@ def load_env_file(path: Path) -> None:
 
 
 load_env_file(HERE.parent / ".env")
+
+
+def training_status() -> dict[str, str]:
+    """Label name -> "trained", or "held_out" for the 45 labels kept out of v3 training entirely."""
+    data = HERE.parent / "data"
+    split = json.loads((data / "processed" / "v3_split.json").read_text())
+    trained = set(split["base_labels"]) | set(split["pseudo_unseen_labels"])
+    status: dict[str, str] = {}
+    for label_id in json.loads((data / "standardized" / "labels.json").read_text()):
+        name = label_id.split(":", 1)[1]  # e.g. "banking77:card_arrival"; a name can occur in both datasets
+        if status.get(name) != "trained":
+            status[name] = "trained" if label_id in trained else "held_out"
+    return status
+
+
 DOMAINS = json.loads((HERE / "domains.json").read_text())
+LABEL_STATUS = training_status()
+for _domain in DOMAINS.values():  # options that are not dataset labels at all are "new"
+    _domain["option_training"] = {name: LABEL_STATUS.get(name, "new") for name in _domain["options"]}
+    _domain["trained_domain"] = "trained" in _domain["option_training"].values()
 NEBIUS_BASE_URL = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1").rstrip("/")
 NEBIUS_API_KEY = os.environ.get("NEBIUS_API_KEY", "").strip()
 LLM_MODEL = os.environ.get("REFLEX_LLM_MODEL", "nvidia/Nemotron-3_5-Lightning")

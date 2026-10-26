@@ -4,11 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reflex Demo</title>
+<link rel="icon" href="data:,">
 <style>
   :root {
     --bg: #f5f6f2; --surface: #ffffff; --surface-2: #f9faf7; --ink: #161815; --ink-2: #5a5f58; --ink-3: #8b9087;
     --line: #e2e5dd; --accent: #76b900; --accent-ink: #3f6700; --accent-soft: #edf6dc;
     --llm: #6d4ae8; --llm-soft: #eee9fd; --none: #c2410c; --none-soft: #fcebe1; --err: #b91c1c;
+    --new: #0e7490; --new-soft: #e0f2f5;
     --pos: 118, 185, 0; --neg: 109, 74, 232;
     --radius: 14px; --shadow: 0 1px 2px rgba(20, 24, 18, .05), 0 4px 16px rgba(20, 24, 18, .04);
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -18,6 +20,7 @@
       --bg: #0f110e; --surface: #171a16; --surface-2: #1c201b; --ink: #eef0ea; --ink-2: #a9aea5; --ink-3: #757a71;
       --line: #2a2f28; --accent: #86cc0a; --accent-ink: #b4e35a; --accent-soft: #23301a;
       --llm: #a48bff; --llm-soft: #2a2442; --none: #fb923c; --none-soft: #3a2418; --err: #f87171;
+      --new: #67e8f9; --new-soft: #12303a;
       --pos: 134, 204, 10; --neg: 164, 139, 255; --shadow: none;
     }
   }
@@ -25,6 +28,7 @@
     --bg: #0f110e; --surface: #171a16; --surface-2: #1c201b; --ink: #eef0ea; --ink-2: #a9aea5; --ink-3: #757a71;
     --line: #2a2f28; --accent: #86cc0a; --accent-ink: #b4e35a; --accent-soft: #23301a;
     --llm: #a48bff; --llm-soft: #2a2442; --none: #fb923c; --none-soft: #3a2418; --err: #f87171;
+    --new: #67e8f9; --new-soft: #12303a;
     --pos: 134, 204, 10; --neg: 164, 139, 255; --shadow: none;
   }
   * { box-sizing: border-box; }
@@ -60,6 +64,12 @@
   .tab { border: 0; background: none; padding: 7px 14px; border-radius: 9px; cursor: pointer; color: var(--ink-2); font-weight: 500; }
   .tab:hover { color: var(--ink); }
   .tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 999px; font-size: 10.5px; font-weight: 600;
+         letter-spacing: .02em; vertical-align: 1px; white-space: nowrap; }
+  .tag.trained { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line); }
+  .tag.new { background: var(--new-soft); color: var(--new); border: 1px solid var(--new); }
+  .coverage { font-size: 12.5px; color: var(--ink-2); margin-right: 4px; }
+  .chip sup { font-family: system-ui, sans-serif; font-size: 9.5px; font-weight: 600; color: var(--new); margin-left: 4px; vertical-align: 3px; }
   .thr { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 13px; }
   .thr input { accent-color: var(--accent); width: 150px; }
   .thr output { font-family: var(--mono); color: var(--ink); min-width: 34px; }
@@ -200,6 +210,7 @@
 </div>
 <section class="options" aria-label="Options in this domain">
   <span class="label" id="opt-label">Options</span>
+  <span class="coverage" id="coverage"></span>
   <span id="chips" style="display: contents"></span>
   <span class="chip none" title="Added by Reflex: none of the options fits">NONE_OF_THESE</span>
 </section>
@@ -240,6 +251,8 @@ const fmtMs = (ms) => ms == null ? "" : ms >= 1000 ? (ms / 1000).toFixed(2) + " 
 const pct = (x) => Math.max(0, Math.min(100, x * 100)).toFixed(1) + "%";
 
 /* ---------- status ---------- */
+let statusRetryMs = 2000;
+// Polls only until both models report a final state: every request counts against the tunnel's quota.
 async function pollStatus() {
   try {
     const s = await (await fetch("/api/status")).json();
@@ -252,8 +265,12 @@ async function pollStatus() {
     m.title = s.error || "";
     l.className = "pill " + (s.llm === "ready" ? "ok" : s.llm === "checking" ? "busy" : "bad");
     l.lastElementChild.innerHTML = `Token Factory · ${esc(s.llm_model)} <b>${esc(s.llm)}</b>`;
-    setTimeout(pollStatus, s.model === "ready" && s.llm !== "checking" ? 10000 : 800);
-  } catch { setTimeout(pollStatus, 2000); }
+    statusRetryMs = 2000;
+    if (s.model === "loading" || s.llm === "checking") setTimeout(pollStatus, 800);
+  } catch {
+    setTimeout(pollStatus, statusRetryMs);
+    statusRetryMs = Math.min(statusRetryMs * 2, 300000);
+  }
 }
 
 /* ---------- domains ---------- */
@@ -261,9 +278,16 @@ function selectDomain(key) {
   S.domain = key;
   const d = S.domains[key];
   document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.key === key));
-  $("opt-label").textContent = `${Object.keys(d.options).length} options`;
-  $("chips").innerHTML = Object.entries(d.options)
-    .map(([n, desc]) => `<span class="chip" data-name="${esc(n)}" title="${esc(desc)}">${esc(n)}</span>`).join("");
+  const names = Object.keys(d.options), seen = names.filter((n) => d.option_training[n] === "trained").length;
+  $("opt-label").textContent = `${names.length} options`;
+  $("coverage").innerHTML = (d.trained_domain ? `<span class="tag trained">trained domain</span>` : `<span class="tag new">out of training domain</span>`)
+    + ` ${seen === names.length ? "all" : seen ? `${seen} of ${names.length}` : "no"} options seen in training`;
+  const unseen = { held_out: ["held out", "Held out of training: Reflex never saw this label"],
+                   new: ["new", "Not a training label: written for this demo"] };
+  $("chips").innerHTML = Object.entries(d.options).map(([n, desc]) => {
+    const u = d.trained_domain && unseen[d.option_training[n]];  // in a new domain every option is new
+    return `<span class="chip" data-name="${esc(n)}" title="${esc(desc)}${u ? `\n${u[1]}` : ""}">${esc(n)}${u ? `<sup>${u[0]}</sup>` : ""}</span>`;
+  }).join("");
   $("examples").innerHTML = d.examples.map((q) => `<button class="ex" type="button">${esc(q)}</button>`).join("");
   document.querySelectorAll(".ex").forEach((b) => b.addEventListener("click", () => send(b.textContent)));
   setBusy(S.busy);
@@ -458,7 +482,7 @@ function renderPipeline() {
 async function init() {
   S.domains = await (await fetch("/api/domains")).json();
   $("tabs").innerHTML = Object.entries(S.domains)
-    .map(([k, d]) => `<button class="tab" role="tab" data-key="${k}">${esc(d.title)}</button>`).join("");
+    .map(([k, d]) => `<button class="tab" role="tab" data-key="${k}">${esc(d.title)}<span class="tag ${d.trained_domain ? "trained" : "new"}">${d.trained_domain ? "trained" : "unseen"}</span></button>`).join("");
   document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => selectDomain(t.dataset.key)));
   $("thr").addEventListener("input", (e) => ($("thr-v").textContent = Number(e.target.value).toFixed(2)));
   $("form").addEventListener("submit", (e) => { e.preventDefault(); send($("q").value); });
