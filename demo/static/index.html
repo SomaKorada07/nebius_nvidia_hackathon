@@ -250,9 +250,9 @@ async function pollStatus() {
       ? `Nemotron Embed 1B <b>ready</b> · ${esc(s.device)} · loaded in ${s.load_seconds} s`
       : s.model === "error" ? `Embedder <b>failed</b>` : `Nemotron Embed 1B <b>loading…</b>`;
     m.title = s.error || "";
-    l.className = "pill " + (s.llm === "ready" ? "ok" : ["checking", "loading"].includes(s.llm) ? "busy" : "bad");
-    l.lastElementChild.innerHTML = `${esc(s.llm_model)} <b>${esc(s.llm)}</b>`;
-    setTimeout(pollStatus, s.model === "ready" && !["checking", "loading"].includes(s.llm) ? 10000 : 800);
+    l.className = "pill " + (s.llm === "ready" ? "ok" : s.llm === "checking" ? "busy" : "bad");
+    l.lastElementChild.innerHTML = `Token Factory · ${esc(s.llm_model)} <b>${esc(s.llm)}</b>`;
+    setTimeout(pollStatus, s.model === "ready" && s.llm !== "checking" ? 10000 : 800);
   } catch { setTimeout(pollStatus, 2000); }
 }
 
@@ -412,13 +412,13 @@ const RENDER = {
   route: (s) => `<span class="route ${s.target}">${s.target === "reflex" ? "⚡ Answer locally with Reflex" : "↗ Escalate to the Nemotron LLM"}</span>
     <p class="reason">${esc(s.reason)}</p>`,
   llm: (s) => {
-    if (s.status === "running") return `<p class="sub">Sending the question and the options to <code>${esc(s.model)}</code> via Ollama…</p>`;
+    if (s.status === "running") return `<p class="sub">Sending the question and the options to <code>${esc(s.model)}</code> on Nebius Token Factory…</p>`;
     if (s.status === "error") return `<p class="sub" style="color:var(--err)">${esc(s.message)}</p>`;
     const p = s.parsed;
     const verdict = p.decision === "tool" ? `Picked <code>${esc(p.tool)}</code>`
       : p.decision === "none" ? `None of the options fits${p.suggested_tool ? `; suggests a new tool <code>${esc(p.suggested_tool.name)}</code>: ${esc(p.suggested_tool.description)}` : ""}`
       : `Reply unusable: ${esc(p.reason)}`;
-    return `<p class="sub"><code>${esc(s.model)}</code> · ${s.prompt_tokens ?? "?"} prompt tokens in, ${s.tokens ?? "?"} out · thinking off</p>
+    return `<p class="sub"><code>${esc(s.model)}</code> · ${s.prompt_tokens ?? "?"} prompt tokens in, ${s.tokens ?? "?"} out · thinking off · Nebius Token Factory</p>
       <p class="quote">${verdict}</p>${p.reason && p.decision !== "invalid" ? `<p class="reason">“${esc(p.reason)}”</p>` : ""}
       <details><summary>Raw reply</summary><pre>${esc(s.reply)}</pre></details>`;
   },

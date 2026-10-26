@@ -9,11 +9,12 @@ the domain's options afresh; nothing is cached. The embedding model loads at sta
 work runs on one dedicated worker thread, so the web server never blocks while embedding.
 
 Routing: if Reflex picks an option with probability >= the threshold, the answer is final. If it
-answers NONE_OF_THESE or is less sure than the threshold, the question goes to a Nemotron LLM served
-by Ollama, which either picks an option or says none fits and suggests the missing tool.
+answers NONE_OF_THESE or is less sure than the threshold, the question goes to a Nemotron LLM on
+Nebius Token Factory, which either picks an option or says none fits and suggests the missing tool.
 
-Environment: OLLAMA_URL (default http://localhost:11434), REFLEX_LLM_MODEL
-(default nemotron-3.5-lightning:30b-a3b-mlx), PORT (default 8000).
+Environment, read from the shell or from .env in the repository root (see .env.example):
+NEBIUS_API_KEY (required for the LLM), REFLEX_LLM_MODEL (default nvidia/Nemotron-3_5-Lightning),
+NEBIUS_BASE_URL (default https://api.tokenfactory.nebius.com/v1), PORT (default 8000).
 """
 
 import asyncio
@@ -40,9 +41,24 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))
 from predict import NONE_OF_THESE, ReflexPredictor, candidate_text  # noqa: E402
 
+
+
+def load_env_file(path: Path) -> None:
+    """Read KEY=VALUE lines into os.environ; variables already set in the shell take precedence."""
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip("'\""))
+
+
+load_env_file(HERE.parent / ".env")
 DOMAINS = json.loads((HERE / "domains.json").read_text())
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-LLM_MODEL = os.environ.get("REFLEX_LLM_MODEL", "nemotron-3.5-lightning:30b-a3b-mlx")
+NEBIUS_BASE_URL = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1").rstrip("/")
+NEBIUS_API_KEY = os.environ.get("NEBIUS_API_KEY", "").strip()
+LLM_MODEL = os.environ.get("REFLEX_LLM_MODEL", "nvidia/Nemotron-3_5-Lightning")
 PREVIEW_DIMS = 128  # embedding dimensions sent to the UI for the vector strip
 
 LLM_SYSTEM = """You are the fallback router of an assistant. A fast local classifier could not confidently \
@@ -119,22 +135,35 @@ async def on_model_thread(fn, *args):
     return await asyncio.get_running_loop().run_in_executor(MODEL_THREAD, fn, *args)
 
 
-# ---- LLM (Ollama) ----------------------------------------------------------------------------
+# ---- LLM (Nebius Token Factory) --------------------------------------------------------------
+
+class LLMUnavailable(Exception):
+    pass
+
+
+def token_factory() -> httpx.AsyncClient:
+    return httpx.AsyncClient(base_url=NEBIUS_BASE_URL, timeout=60,
+                             headers={"Authorization": f"Bearer {NEBIUS_API_KEY}"})
+
 
 async def check_llm() -> None:
-    """Find the model in Ollama and load it, so the first escalation is fast."""
+    """Check that the API key works and that Token Factory serves the model."""
+    if not NEBIUS_API_KEY:
+        status["llm"] = "no API key"
+        return
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            names = [m["name"] for m in (await client.get(f"{OLLAMA_URL}/api/tags")).json().get("models", [])]
-        if LLM_MODEL not in names:
-            status["llm"] = "model missing"
-            return
-        status["llm"] = "loading"
-        async with httpx.AsyncClient(timeout=300) as client:
-            await client.post(f"{OLLAMA_URL}/api/generate", json={"model": LLM_MODEL, "prompt": "", "keep_alive": "30m"})
-        status["llm"] = "ready"
+        async with token_factory() as client:
+            response = await client.get("/models")
     except httpx.HTTPError:
-        status["llm"] = "not running"
+        status["llm"] = "unreachable"
+        return
+    if response.status_code in (401, 403):
+        status["llm"] = "API key rejected"
+    elif response.is_error:
+        status["llm"] = f"error {response.status_code}"
+    else:
+        served = {model["id"] for model in response.json().get("data", [])}
+        status["llm"] = "ready" if LLM_MODEL in served else "model not found"
 
 
 def parse_reply(reply: str, options: dict[str, str]) -> dict:
@@ -154,16 +183,25 @@ def parse_reply(reply: str, options: dict[str, str]) -> dict:
 
 async def ask_llm(question: str, options: dict[str, str]) -> dict:
     tools = "\n".join(f"- {name}: {description}" for name, description in options.items())
-    body = {"model": LLM_MODEL, "stream": False, "think": False, "keep_alive": "30m",
-            "options": {"temperature": 0, "num_ctx": 4096},
+    body = {"model": LLM_MODEL, "temperature": 0, "max_tokens": 256,
+            "chat_template_kwargs": {"enable_thinking": False},  # otherwise Nemotron reasons first: 3-7 s
             "messages": [{"role": "system", "content": LLM_SYSTEM},
                          {"role": "user", "content": f"Request: {question}\nAvailable tools:\n{tools}"}]}
+    if not NEBIUS_API_KEY:
+        raise LLMUnavailable("NEBIUS_API_KEY is not set (add it to .env and restart)")
     start = time.perf_counter()
-    async with httpx.AsyncClient(timeout=120) as client:
-        response = (await client.post(f"{OLLAMA_URL}/api/chat", json=body)).raise_for_status().json()
-    reply = response["message"]["content"].strip()
+    try:
+        async with token_factory() as client:
+            response = await client.post("/chat/completions", json=body)
+    except httpx.HTTPError as error:
+        raise LLMUnavailable(f"Token Factory request failed: {error}") from error
+    if response.is_error:
+        raise LLMUnavailable(f"Token Factory returned {response.status_code}: {response.text[:300]}")
+    data = response.json()
+    reply = (data["choices"][0]["message"].get("content") or "").strip()
+    usage = data.get("usage") or {}
     return {"ms": elapsed_ms(start), "reply": reply, "parsed": parse_reply(reply, options),
-            "tokens": response.get("eval_count"), "prompt_tokens": response.get("prompt_eval_count")}
+            "tokens": usage.get("completion_tokens"), "prompt_tokens": usage.get("prompt_tokens")}
 
 
 # ---- request pipeline ------------------------------------------------------------------------
@@ -219,8 +257,8 @@ async def pipeline(domain: str, question: str, threshold: float):
         yield event("llm", status="running", model=LLM_MODEL)
         try:
             llm = await ask_llm(question, options)
-        except httpx.HTTPError as error:
-            yield event("llm", status="error", message=f"Ollama request failed: {error}")
+        except LLMUnavailable as error:
+            yield event("llm", status="error", message=str(error))
             yield event("final", answer=answer, source="reflex (LLM unavailable)", total_ms=elapsed_ms(start))
             return
         yield event("llm", status="done", model=LLM_MODEL, **llm)

@@ -1,22 +1,24 @@
 # Reflex demo
 
-A chat page that routes each question to one of a domain's tools. Reflex (the v3 head on Nemotron Embed 1B) answers on its own when it is confident. When it answers `NONE_OF_THESE`, or when its top probability is below the threshold slider, the question goes to a Nemotron LLM served by Ollama. The LLM either picks a tool or names the missing one.
+A chat page that routes each question to one of a domain's tools. Reflex (the v3 head on Nemotron Embed 1B) answers on its own when it is confident. When it answers `NONE_OF_THESE`, or when its top probability is below the threshold slider, the question goes to a Nemotron LLM (`nvidia/Nemotron-3_5-Lightning`) on Nebius Token Factory. The LLM either picks a tool or names the missing one.
 
 ## Run
 
 ```bash
-ollama serve                                         # if it is not already running
-ollama pull nemotron-3.5-lightning:30b-a3b-mlx       # once, 19 GB
-.venv/bin/python demo/app.py                         # from the repository root
+cp .env.example .env                 # then put your Token Factory key in NEBIUS_API_KEY
+.venv/bin/python demo/app.py         # from the repository root
 ```
 
-Open http://localhost:8000. The embedding model loads in about 4 s at startup, and the header shows when both models are ready. The page works without Ollama: questions that would escalate keep Reflex's answer and are marked "LLM unavailable".
+Open http://localhost:8000. The embedding model loads in about 4 s at startup. The header shows when the embedder is ready, and whether the API key works and Token Factory serves the model. Without a key the page still works: questions that would escalate keep Reflex's answer and are marked "LLM unavailable".
+
+Settings are read from the shell or from `.env` in the repository root. Shell variables take precedence.
 
 | Variable | Default |
 |---|---|
 | `PORT` | `8000` |
-| `OLLAMA_URL` | `http://localhost:11434` |
-| `REFLEX_LLM_MODEL` | `nemotron-3.5-lightning:30b-a3b-mlx` |
+| `NEBIUS_API_KEY` | none; required for the LLM fallback |
+| `REFLEX_LLM_MODEL` | `nvidia/Nemotron-3_5-Lightning` |
+| `NEBIUS_BASE_URL` | `https://api.tokenfactory.nebius.com/v1` |
 
 ## What happens on each question
 

@@ -528,5 +528,5 @@ checkpoints/v3/
 │   ├── training_log.json       per-epoch losses for the three steps (seed 17)
 │   └── calibration.json        cosine threshold and temperatures
 ├── figures/                    fig1_training, fig2_comparison, fig3_tradeoff, fig4_permutation_stability
-└── weights/                    reflex_v3.pt, reflex_v3_base.pt (not in git; hashes in MANIFEST.json)
+└── weights/                    reflex_v3.pt, reflex_v3_base.pt (hashes in MANIFEST.json)
 ```

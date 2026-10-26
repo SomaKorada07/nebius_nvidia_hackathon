@@ -19,12 +19,12 @@ Run everything from the repository root. You need:
    ```bash
    python3.10 -m venv .venv && .venv/bin/pip install -r requirements.txt
    ```
-2. **The Nemotron embedding model** in `models/` (about 2 GB, downloaded once):
+2. **The Nemotron embedding model** in `models/` (2.9 GB, downloaded once):
    ```bash
    .venv/bin/python download_model.py
    ```
-3. **The trained v3 weights** in `checkpoints/v3/weights/reflex_v3.pt`. Weights are not stored in
-   git. If the file is missing, retrain it as described in `checkpoints/v3/REPORT.md` §8.
+3. **The trained v3 weights** are included in git: `checkpoints/v3/weights/reflex_v3.pt` (9 MB).
+   To retrain them, follow `checkpoints/v3/REPORT.md` §8.
 
 The predictor uses the GPU automatically if there is one: CUDA, then Apple MPS, then CPU.
 

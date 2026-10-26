@@ -77,7 +77,7 @@ class ReflexPredictor:
         """Unit-length float32 vectors; method is "encode_query" (questions) or "encode_document" (options)."""
         if self._encoder is None:
             with contextlib.redirect_stdout(sys.stderr):  # keep stdout clean for JSONL output
-                self._encoder, self._batch_size = load_model(self.config)
+                self._encoder, self._batch_size = load_model({**self.config, "device": self.device})
         vectors = getattr(self._encoder, method)(texts, batch_size=self._batch_size, convert_to_numpy=True)
         return normalize(np.asarray(vectors, dtype=np.float32))  # BF16 output is only unit-length to ~1e-3
 
